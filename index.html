@@ -376,23 +376,23 @@
         </div>
     </div>
 
-    <!-- Script xử lý bảo mật toàn diện -->
+    <!-- Script bảo mật nâng cao chống DevTools & Chụp ảnh Windows + Shift + S -->
     <script>
         // 1. CHẶN CHUỘT PHẢI
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
 
-        // 2. CHẶN CÁC PHÍM TẮT (F12, Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+U, Ctrl+S, Ctrl+P, PrintScreen...)
+        // 2. CHẶN CÁC PHÍM TẮT & TỔ HỢP WINDOWS + SHIFT + S / F12 / COPY / PASTE / CUT
         document.addEventListener('keydown', function(e) {
-            // Chặn phím F12
+            // Chặn F12
             if (e.key === 'F12' || e.keyCode === 123) {
                 e.preventDefault();
                 return false;
             }
             
-            // Chặn phím PrintScreen (Chụp màn hình)
-            if (e.key === 'PrintScreen') {
+            // Chặn PrintScreen & Windows + Shift + S
+            if (e.key === 'PrintScreen' || (e.metaKey && e.shiftKey && (e.key === 's' || e.key === 'S')) || (e.ctrlKey && e.shiftKey && (e.key === 's' || e.key === 'S'))) {
                 e.preventDefault();
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText("");
@@ -400,15 +400,15 @@
                 return false;
             }
 
-            // Chặn các tổ hợp phím tắt với phím Ctrl
+            // Chặn các tổ hợp Ctrl + C, V, X, A, U, S, P và phím tắt mở công cụ lập trình
             if (e.ctrlKey && (
-                e.key === 'c' || e.key === 'C' || // Chặn Ctrl+C (Copy)
-                e.key === 'v' || e.key === 'V' || // Chặn Ctrl+V (Paste)
-                e.key === 'x' || e.key === 'X' || // Chặn Ctrl+X (Cut)
-                e.key === 'a' || e.key === 'A' || // Chặn Ctrl+A (Select All)
-                e.key === 'u' || e.key === 'U' || // Chặn Ctrl+U (View Source)
-                e.key === 's' || e.key === 'S' || // Chặn Ctrl+S (Save)
-                e.key === 'p' || e.key === 'P' || // Chặn Ctrl+P (Print)
+                e.key === 'c' || e.key === 'C' || 
+                e.key === 'v' || e.key === 'V' || 
+                e.key === 'x' || e.key === 'X' || 
+                e.key === 'a' || e.key === 'A' || 
+                e.key === 'u' || e.key === 'U' || 
+                e.key === 's' || e.key === 'S' || 
+                e.key === 'p' || e.key === 'P' ||
                 (e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c'))
             )) {
                 e.preventDefault();
@@ -416,30 +416,21 @@
             }
         });
 
-        // 3. CHẶN SỰ KIỆN COPY, CUT VÀ PASTE TRỰC TIẾP TRÊN TRÌNH DUYỆT
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-        });
-        document.addEventListener('cut', function(e) {
-            e.preventDefault();
-        });
-        document.addEventListener('paste', function(e) {
-            e.preventDefault();
-        });
+        // 3. CHẶN SỰ KIỆN CLIPBOARD TRỰC TIẾP
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('cut', e => e.preventDefault());
+        document.addEventListener('paste', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
 
-        // 4. CHẶN KÉO THẢ ẢNH / NỘI DUNG
-        document.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-        });
-
-        // 5. BẪY PHÁT HIỆN MỞ DEVTOOLS (F12)
-        setInterval(function() {
+        // 4. BẪY PHÁT HIỆN KHI BẤM NÚT INSPECT HOẶC MỞ MÀN HÌNH DEVTOOLS
+        const detectDevTool = function() {
             const widthThreshold = window.outerWidth - window.innerWidth > 160;
             const heightThreshold = window.outerHeight - window.innerHeight > 160;
             if (widthThreshold || heightThreshold) {
-                document.body.innerHTML = "<div style='background:#0b0b0e;color:red;height:100vh;display:flex;justify-content:center;align-items:center;font-size:2rem;font-family:sans-serif;'>Truy cập bị từ chối! Vui lòng tắt công cụ lập trình.</div>";
+                document.body.innerHTML = "<div style='background:#0b0b0e;color:#ff4757;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:1.8rem;font-family:sans-serif;text-align:center;padding:20px;'><h3>Truy cập bị từ chối!</h3><p style='font-size:1rem;color:#a4b0be;margin-top:10px;'>Phát hiện hành vi can thiệp mã nguồn trang web.</p></div>";
             }
-        }, 1000);
+        };
+        setInterval(detectDevTool, 500);
 
         // --- Xử lý nhạc nền ---
         const music = document.getElementById('bg-music');
