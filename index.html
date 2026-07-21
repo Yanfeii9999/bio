@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAKURA SMP - Discord Profile</title>
+    <!-- Font chữ hiện đại từ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Thư viện biểu tượng FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: #0b0b0e;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ảnh nền mờ ảo phía sau */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.3) blur(10px);
+            transform: scale(1.05);
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Khung chứa chính chuẩn mẫu Discord Card */
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        .discord-profile-card {
+            background: #18191c;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Banner hoa anh đào phía trên profile */
+        .discord-banner {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background: #2b2d31;
+        }
+
+        /* Phần thân profile chứa avatar và nội dung */
+        .discord-body {
+            padding: 0 16px 16px 16px;
+            position: relative;
+        }
+
+        /* Avatar đè lên banner */
+        .discord-avatar-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-top: -45px;
+            margin-bottom: 10px;
+        }
+
+        .discord-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #18191c;
+        }
+
+        .discord-online-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            background-color: #23a55a;
+            border: 3px solid #18191c;
+            border-radius: 50%;
+        }
+
+        /* Tên và biệt danh */
+        .discord-username-area {
+            margin-bottom: 12px;
+        }
+
+        .discord-display-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f2f3f5;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .discord-username {
+            font-size: 0.85rem;
+            color: #949ba4;
+        }
+
+        .discord-badges-icons {
+            color: #5865F2;
+            font-size: 1rem;
+        }
+
+        /* Phần giới thiệu (Bio) */
+        .discord-bio {
+            font-size: 0.85rem;
+            color: #dbdee1;
+            line-height: 1.5;
+            background: #111214;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .discord-bio a {
+            color: #00a8fc;
+            text-decoration: none;
+        }
+
+        .discord-bio a:hover {
+            text-decoration: underline;
+        }
+
+        .bio-title-text {
+            color: #949ba4;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Các huy hiệu Role màu sắc giống trong ảnh */
+        .discord-roles-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .role-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #2b2d31;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #dbdee1;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .role-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Nút Sửa Hồ Sơ / Liên kết chính */
+        .discord-edit-btn {
+            display: block;
+            width: 100%;
+            background-color: #5865F2;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .discord-edit-btn:hover {
+            background-color: #4752c4;
+        }
+
+        /* Nút mạng xã hội phụ bên dưới */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            background: #18191c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #dbdee1;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #2b2d31;
+            color: white;
+        }
+
+        /* Bộ đếm lượt xem */
+        .views-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #d4d4d8;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ảnh nền mờ phía sau -->
+    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80" alt="Background" class="bg-image">
+    <div class="bg-overlay"></div>
+
+    <!-- Thẻ Audio tự động phát nhạc ngầm -->
+    <audio id="bg-music" loop autoplay>
+        <source src="https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" type="audio/ogg">
+    </audio>
+
+    <!-- Bộ đếm lượt xem -->
+    <div class="views-counter">
+        <i class="fa-regular fa-eye"></i> 
+        <span id="view-count">5</span>
+    </div>
+
+    <div class="container">
+        <!-- Thẻ Discord Profile Card chuẩn -->
+        <div class="discord-profile-card">
+            <!-- Banner hoa anh đào -->
+            <img src="https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&auto=format&fit=crop&q=80" alt="Banner" class="discord-banner">
+            
+            <div class="discord-body">
+                <!-- Avatar -->
+                <div class="discord-avatar-container">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60" alt="Avatar" class="discord-avatar">
+                    <div class="discord-online-badge"></div>
+                </div>
+
+                <!-- Tên hiển thị -->
+                <div class="discord-username-area">
+                    <div class="discord-display-name">
+                        Yanfeii_9999 
+                        <i class="fa-solid fa-circle-check discord-badges-icons" title="Verified"></i>
+                    </div>
+                    <div class="discord-username">valer_sakura</div>
+                </div>
+
+                <!-- Tiểu sử (Bio) -->
+                <div class="bio-title-text">Giới thiệu</div>
+                <div class="discord-bio">
+                    Admin server Minecraft<br>
+                    <strong>SAKURA SMP</strong><br>
+                    <a href="https://discord.gg/jchMgVN2u" target="_blank">https://discord.gg/jchMgVN2u</a><br><br>
+                    💻 Dev: HTML, CSS, JS, C++, PYTHON<br>
+                    🗄️ Database: MySQL, SQL Server<br>
+                    🎨 Design: Web + Poster<br>
+                    🚀 Leader dự án 1 team coreexpress
+                </div>
+
+                <!-- Các huy hiệu Role (Màu sắc giống trong ảnh server của bạn) -->
+                <div class="bio-title-text">Vai trò trong Server</div>
+                <div class="discord-roles-container">
+                    <div class="role-pill">
+                        <span class="role-dot" style="background-color: #1abc9c;"></span> Admin
+                    </div>
+                    <div class="role-pill">
+                        <span class="role-dot" style="background-color: #e91e63;"></span> Trai
+                    </div>
+                </div>
+
+                <!-- Nút bấm liên kết chính (Thay cho nút Sửa Hồ Sơ hoặc dẫn vào Discord) -->
+                <a href="https://discord.gg/jchMgVN2u" target="_blank" class="discord-edit-btn">
+                    Tham gia SAKURA SMP
+                </a>
+            </div>
+        </div>
+
+        <!-- 3 nút mạng xã hội phụ bên dưới -->
+        <div class="social-icons">
+            <a href="https://discord.gg/jchMgVN2u" target="_blank" class="social-btn" title="Discord">
+                <i class="fa-brands fa-discord" style="color: #5865F2;"></i>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="social-btn" title="Instagram">
+                <i class="fa-brands fa-instagram" style="color: #E4405F;"></i>
+            </a>
+            <a href="https://facebook.com" target="_blank" class="social-btn" title="Facebook">
+                <i class="fa-brands fa-facebook" style="color: #0866FF;"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Script tự động phát nhạc và đếm view -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const music = document.getElementById('bg-music');
+            music.volume = 0.5;
+            let playPromise = music.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    window.addEventListener('pointerdown', () => {
+                        music.play();
+                    }, { once: true });
+                });
+            }
+        });
+
+        // Xử lý bộ đếm lượt xem
+        let views = localStorage.getItem('profile_views');
+        if (!views) {
+            views = 5;
+        } else {
+            views = parseInt(views) + 1;
+        }
+        localStorage.setItem('profile_views', views);
+        document.getElementById('view-count').innerText = views;
+    </script>
+</body>
+</html>
