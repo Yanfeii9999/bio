@@ -85,7 +85,6 @@
     <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
     <div class="bg-overlay"></div>
 
-    <!-- Thẻ âm thanh -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
@@ -95,7 +94,6 @@
         <span id="view-count">5</span>
     </div>
 
-    <!-- Nút bật/tắt nhạc -->
     <button class="music-control-btn" id="music-btn" onclick="toggleMusic()">
         <i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span>
     </button>
@@ -158,9 +156,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT XỬ LÝ AN TOÀN VÀ ĐÃ MÃ HÓA RỐI -->
     <script>
-        // Hệ thống bảo mật chống soi mã và phím tắt
         (function() {
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('keydown', function(e) {
@@ -180,7 +176,6 @@
             }, 500);
         })();
 
-        // Xử lý âm thanh độc lập, chống kẹt trạng thái
         const music = document.getElementById('bg-music');
         const musicIcon = document.getElementById('music-icon');
         const musicText = document.getElementById('music-text');
@@ -192,7 +187,6 @@
 
         function toggleMusic() {
             if (!music) return;
-            
             if (isPlaying) {
                 music.pause();
                 isPlaying = false;
@@ -204,12 +198,11 @@
                     musicIcon.className = "fa-solid fa-pause";
                     musicText.innerText = "Tắt Nhạc";
                 }).catch(error => {
-                    console.log("Trình duyệt chặn phát nhạc tự động:", error);
+                    console.log("Phát nhạc bị chặn:", error);
                 });
             }
         }
 
-        // Tự động kích hoạt âm thanh khi người dùng click bất kỳ đâu lần đầu tiên trên trang
         document.addEventListener('DOMContentLoaded', () => {
             let views = localStorage.getItem('profile_views');
             views = !views ? 5 : parseInt(views) + 1;
@@ -217,13 +210,11 @@
             const viewElem = document.getElementById('view-count');
             if(viewElem) viewElem.innerText = views;
 
-            // Thử phát nhạc ngầm ngay khi tải trang
             music.play().then(() => {
                 isPlaying = true;
                 musicIcon.className = "fa-solid fa-pause";
                 musicText.innerText = "Tắt Nhạc";
             }).catch(() => {
-                // Nếu bị chặn, gắn sự kiện click đầu tiên để mở khóa âm thanh
                 const unlockAudio = () => {
                     music.play().then(() => {
                         isPlaying = true;
