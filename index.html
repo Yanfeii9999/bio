@@ -253,18 +253,41 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 1000;
         }
+
+        /* Nút bật/tắt nhạc phong cách góc phải */
+        .music-control-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(24, 25, 28, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .music-control-btn:hover {
+            background: rgba(88, 101, 242, 0.8);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Ảnh nền mờ phía sau (Dùng fallback ảnh online nếu chưa có file local) -->
+    <!-- Ảnh nền mờ phía sau -->
     <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image" onerror="this.src='https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80'">
     <div class="bg-overlay"></div>
 
-    <!-- Thẻ Audio tự động phát nhạc ngầm -->
-    <audio id="bg-music" loop autoplay>
-        <source src="BÔNG HOA CHẲNG TỒN TẠI - HUY VẠC _ OFFICIAL MUSIC VIDEO [6dJ2sDa9Ex4].mp3" type="audio/mpeg">
-        Trình duyệt không hỗ trợ tệp âm thanh này.
+    <!-- Thẻ Audio (Hãy đổi tên file nhạc của bạn thành music.mp3 để không bị lỗi đường dẫn) -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Bộ đếm lượt xem -->
@@ -272,6 +295,11 @@
         <i class="fa-regular fa-eye"></i> 
         <span id="view-count">5</span>
     </div>
+
+    <!-- Nút bật/tắt nhạc dự phòng nếu trình duyệt chặn tự phát -->
+    <button class="music-control-btn" id="music-btn" onclick="toggleMusic()">
+        <i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span>
+    </button>
 
     <div class="container">
         <!-- Thẻ Discord Profile Card chuẩn -->
@@ -339,20 +367,51 @@
         </div>
     </div>
 
-    <!-- Script tự động phát nhạc và đếm view -->
+    <!-- Script xử lý nhạc và lượt xem -->
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const music = document.getElementById('bg-music');
-            music.volume = 0.5;
-            let playPromise = music.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    window.addEventListener('pointerdown', () => {
-                        music.play();
-                    }, { once: true });
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+        let isPlaying = false;
+
+        music.volume = 0.5;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+                musicIcon.className = "fa-solid fa-music";
+                musicText.innerText = "Bật Nhạc";
+            } else {
+                music.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.className = "fa-solid fa-pause";
+                    musicText.innerText = "Tắt Nhạc";
+                }).catch(e => {
+                    console.log("Phát nhạc bị chặn bởi trình duyệt");
                 });
             }
+        }
+
+        // Tự động cố gắng phát khi load trang
+        window.addEventListener('DOMContentLoaded', () => {
+            music.play().then(() => {
+                isPlaying = true;
+                musicIcon.className = "fa-solid fa-pause";
+                musicText.innerText = "Tắt Nhạc";
+            }).catch(error => {
+                // Nếu trình duyệt chặn, người dùng chỉ cần click 1 lần bất kỳ trên trang hoặc bấm nút góc phải
+                window.addEventListener('pointerdown', () => {
+                    if (!isPlaying) {
+                        music.play().then(() => {
+                            isPlaying = true;
+                            musicIcon.className = "fa-solid fa-pause";
+                            musicText.innerText = "Tắt Nhạc";
+                        });
+                    }
+                }, { once: true });
+            });
         });
 
         // Xử lý bộ đếm lượt xem
