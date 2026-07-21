@@ -257,13 +257,14 @@
 </head>
 <body>
 
-    <!-- Ảnh nền mờ phía sau -->
-    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80" alt="Background" class="bg-image">
+    <!-- Ảnh nền mờ phía sau (Dùng fallback ảnh online nếu chưa có file local) -->
+    <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image" onerror="this.src='https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80'">
     <div class="bg-overlay"></div>
 
     <!-- Thẻ Audio tự động phát nhạc ngầm -->
     <audio id="bg-music" loop autoplay>
-        <source src="https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" type="audio/ogg">
+        <source src="BÔNG HOA CHẲNG TỒN TẠI - HUY VẠC _ OFFICIAL MUSIC VIDEO [6dJ2sDa9Ex4].mp3" type="audio/mpeg">
+        Trình duyệt không hỗ trợ tệp âm thanh này.
     </audio>
 
     <!-- Bộ đếm lượt xem -->
@@ -276,12 +277,12 @@
         <!-- Thẻ Discord Profile Card chuẩn -->
         <div class="discord-profile-card">
             <!-- Banner hoa anh đào -->
-            <img src="https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&auto=format&fit=crop&q=80" alt="Banner" class="discord-banner">
+            <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner" onerror="this.src='https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&auto=format&fit=crop&q=80'">
             
             <div class="discord-body">
                 <!-- Avatar -->
                 <div class="discord-avatar-container">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60" alt="Avatar" class="discord-avatar">
+                    <img src="logo.png" alt="Avatar" class="discord-avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60'">
                     <div class="discord-online-badge"></div>
                 </div>
 
@@ -306,7 +307,7 @@
                     🚀 Leader dự án 1 team coreexpress
                 </div>
 
-                <!-- Các huy hiệu Role (Màu sắc giống trong ảnh server của bạn) -->
+                <!-- Các huy hiệu Role -->
                 <div class="bio-title-text">Vai trò trong Server</div>
                 <div class="discord-roles-container">
                     <div class="role-pill">
@@ -317,7 +318,7 @@
                     </div>
                 </div>
 
-                <!-- Nút bấm liên kết chính (Thay cho nút Sửa Hồ Sơ hoặc dẫn vào Discord) -->
+                <!-- Nút bấm liên kết chính -->
                 <a href="https://discord.gg/jchMgVN2u" target="_blank" class="discord-edit-btn">
                     Tham gia SAKURA SMP
                 </a>
