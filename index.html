@@ -4,326 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yanfeii_9999</title>
-    <!-- Font chữ hiện đại từ Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Thư viện biểu tượng FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            /* Chặn bôi đen và chọn văn bản */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
-
         body {
-            background-color: #0b0b0e;
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            position: relative;
+            background-color: #0b0b0e; color: #ffffff; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center; overflow-x: hidden; position: relative;
         }
-
-        /* Ảnh nền mờ ảo phía sau */
         .bg-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -2;
-            filter: brightness(0.3) blur(10px);
-            transform: scale(1.05);
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; filter: brightness(0.3) blur(10px); transform: scale(1.05); pointer-events: none;
         }
-
         .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none;
         }
-
-        /* Khung chứa chính chuẩn mẫu Discord Card */
-        .container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            z-index: 1;
-        }
-
+        .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; }
         .discord-profile-card {
-            background: #18191c;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: #18191c; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        /* Banner hoa anh đào phía trên profile */
-        .discord-banner {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            background: #2b2d31;
-            pointer-events: none;
-        }
-
-        /* Phần thân profile chứa avatar và nội dung */
-        .discord-body {
-            padding: 0 16px 16px 16px;
-            position: relative;
-        }
-
-        /* Avatar đè lên banner */
-        .discord-avatar-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin-top: -45px;
-            margin-bottom: 10px;
-        }
-
-        .discord-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 6px solid #18191c;
-            pointer-events: none;
-        }
-
+        .discord-banner { width: 100%; height: 120px; object-fit: cover; background: #2b2d31; pointer-events: none; }
+        .discord-body { padding: 0 16px 16px 16px; position: relative; }
+        .discord-avatar-container { position: relative; width: 80px; height: 80px; margin-top: -45px; margin-bottom: 10px; }
+        .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 6px solid #18191c; pointer-events: none; }
         .discord-online-badge {
-            position: absolute;
-            bottom: 4px;
-            right: 4px;
-            width: 16px;
-            height: 16px;
-            background-color: #23a55a;
-            border: 3px solid #18191c;
-            border-radius: 50%;
+            position: absolute; bottom: 4px; right: 4px; width: 16px; height: 16px;
+            background-color: #23a55a; border: 3px solid #18191c; border-radius: 50%;
         }
-
-        /* Tên và biệt danh */
-        .discord-username-area {
-            margin-bottom: 12px;
-        }
-
-        .discord-display-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #f2f3f5;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .discord-username {
-            font-size: 0.85rem;
-            color: #949ba4;
-        }
-
-        .discord-badges-icons {
-            color: #5865F2;
-            font-size: 1rem;
-        }
-
-        /* Phần giới thiệu (Bio) */
+        .discord-username-area { margin-bottom: 12px; }
+        .discord-display-name { font-size: 1.25rem; font-weight: 700; color: #f2f3f5; display: flex; align-items: center; gap: 6px; }
+        .discord-username { font-size: 0.85rem; color: #949ba4; }
+        .discord-badges-icons { color: #5865F2; font-size: 1rem; }
         .discord-bio {
-            font-size: 0.85rem;
-            color: #dbdee1;
-            line-height: 1.5;
-            background: #111214;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            word-break: break-word;
+            font-size: 0.85rem; color: #dbdee1; line-height: 1.5; background: #111214;
+            padding: 10px; border-radius: 8px; margin-bottom: 12px; word-break: break-word;
         }
-
-        .discord-bio a {
-            color: #00a8fc;
-            text-decoration: none;
-        }
-
-        .discord-bio a:hover {
-            text-decoration: underline;
-        }
-
-        .bio-title-text {
-            color: #949ba4;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        /* Các huy hiệu Role màu sắc giống trong ảnh */
-        .discord-roles-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
-
+        .discord-bio a { color: #00a8fc; text-decoration: none; }
+        .discord-bio a:hover { text-decoration: underline; }
+        .bio-title-text { color: #949ba4; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .discord-roles-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
         .role-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #2b2d31;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            color: #dbdee1;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: inline-flex; align-items: center; gap: 5px; background: #2b2d31;
+            padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; color: #dbdee1; border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        .role-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        /* Nút Sửa Hồ Sơ / Liên kết chính */
+        .role-dot { width: 8px; height: 8px; border-radius: 50%; }
         .discord-edit-btn {
-            display: block;
-            width: 100%;
-            background-color: #5865F2;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-decoration: none;
-            transition: background-color 0.2s;
+            display: block; width: 100%; background-color: #5865F2; color: white; text-align: center;
+            padding: 10px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: background-color 0.2s;
         }
-
-        .discord-edit-btn:hover {
-            background-color: #4752c4;
-        }
-
-        /* Nút mạng xã hội phụ bên dưới */
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 15px;
-        }
-
+        .discord-edit-btn:hover { background-color: #4752c4; }
+        .social-icons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
         .social-btn {
-            width: 40px;
-            height: 40px;
-            background: #18191c;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #dbdee1;
-            font-size: 1.1rem;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.2s;
+            width: 40px; height: 40px; background: #18191c; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; color: #dbdee1; font-size: 1.1rem; text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.2s;
         }
-
-        .social-btn:hover {
-            background: #2b2d31;
-            color: white;
-        }
-
-        /* Bộ đếm lượt xem */
+        .social-btn:hover { background: #2b2d31; color: white; }
         .views-counter {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #d4d4d8;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 1000;
+            position: fixed; bottom: 20px; left: 20px; display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 20px;
+            font-size: 0.8rem; color: #d4d4d8; border: 1px solid rgba(255, 255, 255, 0.05); z-index: 1000;
         }
-
-        /* Nút bật/tắt nhạc phong cách góc phải dưới */
         .music-control-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(24, 25, 28, 0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            padding: 10px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 1000;
-            transition: all 0.3s;
+            position: fixed; bottom: 20px; right: 20px; background: rgba(24, 25, 28, 0.85); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 10px 14px; border-radius: 20px;
+            font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 1000; transition: all 0.3s;
         }
-
-        .music-control-btn:hover {
-            background: rgba(88, 101, 242, 0.9);
-        }
+        .music-control-btn:hover { background: rgba(88, 101, 242, 0.9); }
     </style>
 </head>
 <body>
 
-    <!-- Ảnh nền mờ phía sau -->
-    <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image" onerror="this.src='https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80'">
+    <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
     <div class="bg-overlay"></div>
 
-    <!-- Thẻ Audio tự động phát nhạc ngầm (Tên file: music.mp3) -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Bộ đếm lượt xem góc dưới bên trái -->
     <div class="views-counter">
         <i class="fa-regular fa-eye"></i> 
         <span id="view-count">5</span>
     </div>
 
-    <!-- Nút bật/tắt nhạc góc dưới bên phải -->
     <button class="music-control-btn" id="music-btn" onclick="toggleMusic()">
         <i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span>
     </button>
 
     <div class="container">
-        <!-- Thẻ Discord Profile Card chuẩn -->
         <div class="discord-profile-card">
-            <!-- Banner hoa anh đào -->
-            <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner" onerror="this.src='https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&auto=format&fit=crop&q=80'">
+            <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner">
             
             <div class="discord-body">
-                <!-- Avatar -->
                 <div class="discord-avatar-container">
-                    <img src="logo.png" alt="Avatar" class="discord-avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60'">
+                    <img src="logo.png" alt="Avatar" class="discord-avatar">
                     <div class="discord-online-badge"></div>
                 </div>
 
-                <!-- Tên hiển thị -->
                 <div class="discord-username-area">
                     <div class="discord-display-name">
                         Yanfeii_9999 
@@ -332,7 +116,6 @@
                     <div class="discord-username">valer_sakura</div>
                 </div>
 
-                <!-- Tiểu sử (Bio) -->
                 <div class="bio-title-text">Giới thiệu</div>
                 <div class="discord-bio">
                     Admin server Minecraft<br>
@@ -344,7 +127,6 @@
                     🚀 Leader dự án 1 team coreexpress
                 </div>
 
-                <!-- Các huy hiệu Role -->
                 <div class="bio-title-text">Vai trò</div>
                 <div class="discord-roles-container">
                     <div class="role-pill">
@@ -355,14 +137,12 @@
                     </div>
                 </div>
 
-                <!-- Nút bấm liên kết chính -->
                 <a href="https://discord.gg/jchMgVN2u" target="_blank" class="discord-edit-btn">
                     Tham gia SAKURA SMP
                 </a>
             </div>
         </div>
 
-        <!-- 3 nút mạng xã hội phụ bên dưới -->
         <div class="social-icons">
             <a href="https://discord.gg/8thR9ZDf" target="_blank" class="social-btn" title="Discord">
                 <i class="fa-brands fa-discord" style="color: #5865F2;"></i>
@@ -376,116 +156,9 @@
         </div>
     </div>
 
-    <!-- Script bảo mật nâng cao chống DevTools & Chụp ảnh Windows + Shift + S -->
+    <!-- CODE JAVASCRIPT ĐÃ ĐƯỢC MÃ HÓA VÀ LÀM RỐI (OBFUSCATED) -->
     <script>
-        // 1. CHẶN CHUỘT PHẢI
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-
-        // 2. CHẶN CÁC PHÍM TẮT & TỔ HỢP WINDOWS + SHIFT + S / F12 / COPY / PASTE / CUT
-        document.addEventListener('keydown', function(e) {
-            // Chặn F12
-            if (e.key === 'F12' || e.keyCode === 123) {
-                e.preventDefault();
-                return false;
-            }
-            
-            // Chặn PrintScreen & Windows + Shift + S
-            if (e.key === 'PrintScreen' || (e.metaKey && e.shiftKey && (e.key === 's' || e.key === 'S')) || (e.ctrlKey && e.shiftKey && (e.key === 's' || e.key === 'S'))) {
-                e.preventDefault();
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText("");
-                }
-                return false;
-            }
-
-            // Chặn các tổ hợp Ctrl + C, V, X, A, U, S, P và phím tắt mở công cụ lập trình
-            if (e.ctrlKey && (
-                e.key === 'c' || e.key === 'C' || 
-                e.key === 'v' || e.key === 'V' || 
-                e.key === 'x' || e.key === 'X' || 
-                e.key === 'a' || e.key === 'A' || 
-                e.key === 'u' || e.key === 'U' || 
-                e.key === 's' || e.key === 'S' || 
-                e.key === 'p' || e.key === 'P' ||
-                (e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c'))
-            )) {
-                e.preventDefault();
-                return false;
-            }
-        });
-
-        // 3. CHẶN SỰ KIỆN CLIPBOARD TRỰC TIẾP
-        document.addEventListener('copy', e => e.preventDefault());
-        document.addEventListener('cut', e => e.preventDefault());
-        document.addEventListener('paste', e => e.preventDefault());
-        document.addEventListener('dragstart', e => e.preventDefault());
-
-        // 4. BẪY PHÁT HIỆN KHI BẤM NÚT INSPECT HOẶC MỞ MÀN HÌNH DEVTOOLS
-        const detectDevTool = function() {
-            const widthThreshold = window.outerWidth - window.innerWidth > 160;
-            const heightThreshold = window.outerHeight - window.innerHeight > 160;
-            if (widthThreshold || heightThreshold) {
-                document.body.innerHTML = "<div style='background:#0b0b0e;color:#ff4757;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:1.8rem;font-family:sans-serif;text-align:center;padding:20px;'><h3>Truy cập bị từ chối!</h3><p style='font-size:1rem;color:#a4b0be;margin-top:10px;'>Phát hiện hành vi can thiệp mã nguồn trang web.</p></div>";
-            }
-        };
-        setInterval(detectDevTool, 500);
-
-        // --- Xử lý nhạc nền ---
-        const music = document.getElementById('bg-music');
-        const musicIcon = document.getElementById('music-icon');
-        const musicText = document.getElementById('music-text');
-        let isPlaying = false;
-
-        music.volume = 0.5;
-
-        function toggleMusic() {
-            if (isPlaying) {
-                music.pause();
-                isPlaying = false;
-                musicIcon.className = "fa-solid fa-music";
-                musicText.innerText = "Bật Nhạc";
-            } else {
-                music.play().then(() => {
-                    isPlaying = true;
-                    musicIcon.className = "fa-solid fa-pause";
-                    musicText.innerText = "Tắt Nhạc";
-                }).catch(e => {
-                    console.log("Không thể phát nhạc:", e);
-                });
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            music.play().then(() => {
-                isPlaying = true;
-                musicIcon.className = "fa-solid fa-pause";
-                musicText.innerText = "Tắt Nhạc";
-            }).catch(error => {
-                const unlockAudio = () => {
-                    music.play().then(() => {
-                        isPlaying = true;
-                        musicIcon.className = "fa-solid fa-pause";
-                        musicText.innerText = "Tắt Nhạc";
-                        window.removeEventListener('pointerdown', unlockAudio);
-                        window.removeEventListener('keydown', unlockAudio);
-                    });
-                };
-                window.addEventListener('pointerdown', unlockAudio);
-                window.addEventListener('keydown', unlockAudio);
-            });
-        });
-
-        // --- Xử lý bộ đếm lượt xem ---
-        let views = localStorage.getItem('profile_views');
-        if (!views) {
-            views = 5;
-        } else {
-            views = parseInt(views) + 1;
-        }
-        localStorage.setItem('profile_views', views);
-        document.getElementById('view-count').innerText = views;
+        eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!__レンチ_check=''.replace(/^/,String)){while(c--){d[c.toString(36)]=k[c]||c.toString(36)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}};return p}('document.addEventListener(\'contextmenu\',function(e){e.preventDefault()});document.addEventListener(\'keydown\',function(e){if(e.key===\'F12\'||e.keyCode===123){e.preventDefault();return false}if(e.key===\'PrintScreen\'||(e.ctrlKey&&e.shiftKey&&(e.key===\'s\'||e.key===\'S\'))){e.preventDefault();return false}if(e.ctrlKey&&(e.key===\'c\'||e.key===\'C\'||e.key===\'v\'||e.key===\'V\'||e.key===\'x\'||e.key===\'X\'||e.key===\'a\'||e.key===\'A\'||e.key===\'u\'||e.key===\'U\'||e.key===\'s\'||e.key===\'S\'||e.key===\'p\'||e.key===\'P\'||(e.shiftKey&&(e.key===\'I\'||e.key===\'i\'||e.key===\'J\'||e.key===\'j\'||e.key===\'C\'||e.key===\'c\'))){e.preventDefault();return false}});document.addEventListener(\'copy\',e=>e.preventDefault());document.addEventListener(\'cut\',e=>e.preventDefault());document.addEventListener(\'paste\',e=>e.preventDefault());document.addEventListener(\'dragstart\',e=>e.preventDefault());setInterval(function(){if(window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160){document.body.innerHTML=\"<div style=\\\'background:#0b0b0e;color:#ff4757;height:100vh;display:flex;justify-content:center;align-items:center;font-size:2rem;font-family:sans-serif;\\\'>Truy cập bị từ chối!</div>\"}},500);const music=document.getElementById(\'bg-music\');const musicIcon=document.getElementById(\'music-icon\');const musicText=document.getElementById(\'music-text\');let isPlaying=false;music.volume=0.5;function toggleMusic(){if(isPlaying){music.pause();isPlaying=false;musicIcon.className="fa-solid fa-music";musicText.innerText="Bật Nhạc"}else{music.play().then(()=>{isPlaying=true;musicIcon.className="fa-solid fa-pause";musicText.innerText="Tắt Nhạc"}).catch(e=>{console.log(e)})}}window.addEventListener(\'DOMContentLoaded\',()=>{music.play().then(()=>{isPlaying=true;musicIcon.className="fa-solid fa-pause";musicText.innerText="Tắt Nhạc"}).catch(error=>{const unlockAudio=()=>{music.play().then(()=>{isPlaying=true;musicIcon.className="fa-solid fa-pause";musicText.innerText="Tắt Nhạc";window.removeEventListener(\'pointerdown\',unlockAudio);window.removeEventListener(\'keydown\',unlockAudio)})};window.addEventListener(\'pointerdown\',unlockAudio);window.addEventListener(\'keydown\',unlockAudio)})});let views=localStorage.getItem(\'profile_views\');if(!views){views=5}else{views=parseInt(views)+1}localStorage.setItem(\'profile_views\',views);document.getElementById(\'view-count\').innerText=views;',62,62,'||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||'.split('|'),0,{}))
     </script>
 </body>
 </html>
