@@ -1,231 +1,156 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yanfeii_9999</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>System Dashboard - Template v1.0.4</title>
+    <!-- MÃ HTML GIẢ ĐỂ ĐÁNH LẠC HƯỚNG KHI SOI INSPECT -->
     <style>
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-        }
-        body {
-            background-color: #0b0b0e; color: #ffffff; min-height: 100vh;
-            display: flex; justify-content: center; align-items: center; overflow-x: hidden; position: relative;
-        }
-        .bg-image {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -2; filter: brightness(0.3) blur(10px); transform: scale(1.05); pointer-events: none;
-        }
-        .bg-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none;
-        }
-        .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; }
-        .discord-profile-card {
-            background: #18191c; border-radius: 16px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .discord-banner { width: 100%; height: 120px; object-fit: cover; background: #2b2d31; pointer-events: none; }
-        .discord-body { padding: 0 16px 16px 16px; position: relative; }
-        .discord-avatar-container { position: relative; width: 80px; height: 80px; margin-top: -45px; margin-bottom: 10px; }
-        .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 6px solid #18191c; pointer-events: none; }
-        .discord-online-badge {
-            position: absolute; bottom: 4px; right: 4px; width: 16px; height: 16px;
-            background-color: #23a55a; border: 3px solid #18191c; border-radius: 50%;
-        }
-        .discord-username-area { margin-bottom: 12px; }
-        .discord-display-name { font-size: 1.25rem; font-weight: 700; color: #f2f3f5; display: flex; align-items: center; gap: 6px; }
-        .discord-username { font-size: 0.85rem; color: #949ba4; }
-        .discord-badges-icons { color: #5865F2; font-size: 1rem; }
-        .discord-bio {
-            font-size: 0.85rem; color: #dbdee1; line-height: 1.5; background: #111214;
-            padding: 10px; border-radius: 8px; margin-bottom: 12px; word-break: break-word;
-        }
-        .discord-bio a { color: #00a8fc; text-decoration: none; }
-        .discord-bio a:hover { text-decoration: underline; }
-        .bio-title-text { color: #949ba4; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .discord-roles-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-        .role-pill {
-            display: inline-flex; align-items: center; gap: 5px; background: #2b2d31;
-            padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; color: #dbdee1; border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .role-dot { width: 8px; height: 8px; border-radius: 50%; }
-        .discord-edit-btn {
-            display: block; width: 100%; background-color: #5865F2; color: white; text-align: center;
-            padding: 10px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: background-color 0.2s;
-        }
-        .discord-edit-btn:hover { background-color: #4752c4; }
-        .social-icons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
-        .social-btn {
-            width: 40px; height: 40px; background: #18191c; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; color: #dbdee1; font-size: 1.1rem; text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.2s;
-        }
-        .social-btn:hover { background: #2b2d31; color: white; }
-        .views-counter {
-            position: fixed; bottom: 20px; left: 20px; display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 20px;
-            font-size: 0.8rem; color: #d4d4d8; border: 1px solid rgba(255, 255, 255, 0.05); z-index: 1000;
-        }
-        .music-control-btn {
-            position: fixed; bottom: 20px; right: 20px; background: rgba(24, 25, 28, 0.85); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 10px 14px; border-radius: 20px;
-            font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 1000; transition: all 0.3s;
-        }
-        .music-control-btn:hover { background: rgba(88, 101, 242, 0.9); }
+        body { background: #111; color: #00ff00; font-family: monospace; padding: 50px; }
+        .fake-log { font-size: 14px; opacity: 0.7; }
     </style>
 </head>
 <body>
+    <h1>[INFO] Core Server Initialized...</h1>
+    <p class="fake-log">Loading modules: [====================] 100%</p>
+    <p class="fake-log">Status: Template repository protected by standard GNU license.</p>
+    <p class="fake-log">Error 403: Restricted debug area. No sensitive data exposed here.</p>
 
-    <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
-    <div class="bg-overlay"></div>
-
-    <audio id="bg-music" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="views-counter">
-        <i class="fa-regular fa-eye"></i> 
-        <span id="view-count">5</span>
-    </div>
-
-    <button class="music-control-btn" id="music-btn" onclick="toggleMusic()">
-        <i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span>
-    </button>
-
-    <div class="container">
-        <div class="discord-profile-card">
-            <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner">
-            
-            <div class="discord-body">
-                <div class="discord-avatar-container">
-                    <img src="logo.png" alt="Avatar" class="discord-avatar">
-                    <div class="discord-online-badge"></div>
-                </div>
-
-                <div class="discord-username-area">
-                    <div class="discord-display-name">
-                        Yanfeii_9999 
-                        <i class="fa-solid fa-circle-check discord-badges-icons" title="Verified"></i>
-                    </div>
-                    <div class="discord-username">valer_sakura</div>
-                </div>
-
-                <div class="bio-title-text">Giới thiệu</div>
-                <div class="discord-bio">
-                    Admin server Minecraft<br>
-                    <strong>SAKURA SMP</strong><br>
-                    <a href="https://discord.gg/jchMgVN2u" target="_blank">https://discord.gg/jchMgVN2u</a><br><br>
-                    💻 Dev: HTML, CSS, JS, C++, PYTHON<br>
-                    🗄️ Database: MySQL, SQL Server<br>
-                    🎨 Design: Web + Poster<br>
-                    🚀 Leader dự án 1 team coreexpress
-                </div>
-
-                <div class="bio-title-text">Vai trò</div>
-                <div class="discord-roles-container">
-                    <div class="role-pill">
-                        <span class="role-dot" style="background-color: #1abc9c;"></span> Admin
-                    </div>
-                    <div class="role-pill">
-                        <span class="role-dot" style="background-color: #e91e63;"></span> Trai
-                    </div>
-                </div>
-
-                <a href="https://discord.gg/jchMgVN2u" target="_blank" class="discord-edit-btn">
-                    Tham gia SAKURA SMP
-                </a>
-            </div>
-        </div>
-
-        <div class="social-icons">
-            <a href="https://discord.gg/8thR9ZDf" target="_blank" class="social-btn" title="Discord">
-                <i class="fa-brands fa-discord" style="color: #5865F2;"></i>
-            </a>
-            <a href="https://www.instagram.com/luuquangtronghistory/" target="_blank" class="social-btn" title="Instagram">
-                <i class="fa-brands fa-instagram" style="color: #E4405F;"></i>
-            </a>
-            <a href="https://www.facebook.com/trongquangluu2026" target="_blank" class="social-btn" title="Facebook">
-                <i class="fa-brands fa-facebook" style="color: #0866FF;"></i>
-            </a>
-        </div>
-    </div>
-
+    <!-- TRANG THẬT SẼ ĐƯỢC JAVASCRIPT ĐỘNG TIÊM (RENDER) NGẦM VÀO SAU KHI TẢI TRANG -->
     <script>
-        (function() {
-            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
-                if (e.key === 'PrintScreen' || (e.ctrlKey && e.shiftKey && (e.key === 's' || e.key === 'S'))) { e.preventDefault(); return false; }
-                if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'v' || e.key === 'V' || e.key === 'x' || e.key === 'X' || e.key === 'a' || e.key === 'A' || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P' || (e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')))) {
-                    e.preventDefault(); return false;
-                }
-            });
-            ['copy', 'cut', 'paste', 'dragstart'].forEach(ev => {
-                document.addEventListener(ev, e => e.preventDefault());
-            });
-            setInterval(function() {
-                if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-                    document.body.innerHTML = "<div style='background:#0b0b0e;color:#ff4757;height:100vh;display:flex;justify-content:center;align-items:center;font-size:2rem;font-family:sans-serif;'>Truy cập bị từ chối!</div>";
-                }
-            }, 500);
-        })();
-
-        const music = document.getElementById('bg-music');
-        const musicIcon = document.getElementById('music-icon');
-        const musicText = document.getElementById('music-text');
-        let isPlaying = false;
-
-        if (music) {
-            music.volume = 0.5;
-        }
-
-        function toggleMusic() {
-            if (!music) return;
-            if (isPlaying) {
-                music.pause();
-                isPlaying = false;
-                musicIcon.className = "fa-solid fa-music";
-                musicText.innerText = "Bật Nhạc";
-            } else {
-                music.play().then(() => {
-                    isPlaying = true;
-                    musicIcon.className = "fa-solid fa-pause";
-                    musicText.innerText = "Tắt Nhạc";
-                }).catch(error => {
-                    console.log("Phát nhạc bị chặn:", error);
-                });
+        // Chặn hoàn toàn mọi tương tác và phím tắt như cũ
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || e.keyCode === 123 || (e.ctrlKey && ['c','C','v','V','x','X','u','U','s','S','p','P','a','A'].includes(e.key))) {
+                e.preventDefault();
+                return false;
             }
-        }
+        });
+        ['copy', 'cut', 'paste', 'dragstart'].forEach(ev => document.addEventListener(ev, e => e.preventDefault()));
 
-        document.addEventListener('DOMContentLoaded', () => {
+        // Tự động thay thế toàn bộ nội dung HTML giả bên trên bằng giao diện Discord thật ngay khi trang load xong
+        window.addEventListener('DOMContentLoaded', () => {
+            document.head.innerHTML = `
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Yanfeii_9999</title>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-user-select: none; user-select: none; }
+                    body { background-color: #0b0b0e; color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; position: relative; }
+                    .bg-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: brightness(0.3) blur(10px); transform: scale(1.05); pointer-events: none; }
+                    .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none; }
+                    .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; }
+                    .discord-profile-card { background: #18191c; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); }
+                    .discord-banner { width: 100%; height: 120px; object-fit: cover; background: #2b2d31; pointer-events: none; }
+                    .discord-body { padding: 0 16px 16px 16px; position: relative; }
+                    .discord-avatar-container { position: relative; width: 80px; height: 80px; margin-top: -45px; margin-bottom: 10px; }
+                    .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 6px solid #18191c; pointer-events: none; }
+                    .discord-online-badge { position: absolute; bottom: 4px; right: 4px; width: 16px; height: 16px; background-color: #23a55a; border: 3px solid #18191c; border-radius: 50%; }
+                    .discord-username-area { margin-bottom: 12px; }
+                    .discord-display-name { font-size: 1.25rem; font-weight: 700; color: #f2f3f5; display: flex; align-items: center; gap: 6px; }
+                    .discord-username { font-size: 0.85rem; color: #949ba4; }
+                    .discord-badges-icons { color: #5865F2; font-size: 1rem; }
+                    .discord-bio { font-size: 0.85rem; color: #dbdee1; line-height: 1.5; background: #111214; padding: 10px; border-radius: 8px; margin-bottom: 12px; word-break: break-word; }
+                    .discord-bio a { color: #00a8fc; text-decoration: none; }
+                    .bio-title-text { color: #949ba4; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
+                    .discord-roles-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+                    .role-pill { display: inline-flex; align-items: center; gap: 5px; background: #2b2d31; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; color: #dbdee1; border: 1px solid rgba(255, 255, 255, 0.05); }
+                    .role-dot { width: 8px; height: 8px; border-radius: 50%; }
+                    .discord-edit-btn { display: block; width: 100%; background-color: #5865F2; color: white; text-align: center; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+                    .social-icons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+                    .social-btn { width: 40px; height: 40px; background: #18191c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #dbdee1; font-size: 1.1rem; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.05); }
+                    .views-counter { position: fixed; bottom: 20px; left: 20px; display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #d4d4d8; z-index: 1000; }
+                    .music-control-btn { position: fixed; bottom: 20px; right: 20px; background: rgba(24, 25, 28, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 10px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 1000; }
+                </style>
+            `;
+
+            document.body.innerHTML = `
+                <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
+                <div class="bg-overlay"></div>
+                <audio id="bg-music" loop><source src="music.mp3" type="audio/mpeg"></audio>
+                <div class="views-counter"><i class="fa-regular fa-eye"></i> <span id="view-count">5</span></div>
+                <button class="music-control-btn" id="music-btn" onclick="toggleMusic()"><i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span></button>
+                <div class="container">
+                    <div class="discord-profile-card">
+                        <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner">
+                        <div class="discord-body">
+                            <div class="discord-avatar-container">
+                                <img src="logo.png" alt="Avatar" class="discord-avatar">
+                                <div class="discord-online-badge"></div>
+                            </div>
+                            <div class="discord-username-area">
+                                <div class="discord-display-name">Yanfeii_9999 <i class="fa-solid fa-circle-check discord-badges-icons"></i></div>
+                                <div class="discord-username">valer_sakura</div>
+                            </div>
+                            <div class="bio-title-text">Giới thiệu</div>
+                            <div class="discord-bio">
+                                Admin server Minecraft<br><strong>SAKURA SMP</strong><br>
+                                <a href="https://discord.gg/jchMgVN2u" target="_blank">https://discord.gg/jchMgVN2u</a><br><br>
+                                💻 Dev: HTML, CSS, JS, C++, PYTHON<br>🗄️ Database: MySQL, SQL Server<br>🎨 Design: Web + Poster<br>🚀 Leader dự án 1 team coreexpress
+                            </div>
+                            <div class="bio-title-text">Vai trò</div>
+                            <div class="discord-roles-container">
+                                <div class="role-pill"><span class="role-dot" style="background-color: #1abc9c;"></span> Admin</div>
+                                <div class="role-pill"><span class="role-dot" style="background-color: #e91e63;"></span> Trai</div>
+                            </div>
+                            <a href="https://discord.gg/jchMgVN2u" target="_blank" class="discord-edit-btn">Tham gia SAKURA SMP</a>
+                        </div>
+                    </div>
+                    <div class="social-icons">
+                        <a href="https://discord.gg/8thR9ZDf" target="_blank" class="social-btn"><i class="fa-brands fa-discord" style="color: #5865F2;"></i></a>
+                        <a href="https://www.instagram.com/luuquangtronghistory/" target="_blank" class="social-btn"><i class="fa-brands fa-instagram" style="color: #E4405F;"></i></a>
+                        <a href="https://www.facebook.com/trongquangluu2026" target="_blank" class="social-btn"><i class="fa-brands fa-facebook" style="color: #0866FF;"></i></a>
+                    </div>
+                </div>
+            `;
+
+            // Khởi chạy logic nhạc và bộ đếm
+            window.music = document.getElementById('bg-music');
+            window.musicIcon = document.getElementById('music-icon');
+            window.musicText = document.getElementById('music-text');
+            window.isPlaying = false;
+            if(window.music) window.music.volume = 0.5;
+
+            window.toggleMusic = function() {
+                if(!window.music) return;
+                if(window.isPlaying) {
+                    window.music.pause();
+                    window.isPlaying = false;
+                    window.musicIcon.className = "fa-solid fa-music";
+                    window.musicText.innerText = "Bật Nhạc";
+                } else {
+                    window.music.play().then(() => {
+                        window.isPlaying = true;
+                        window.musicIcon.className = "fa-solid fa-pause";
+                        window.musicText.innerText = "Tắt Nhạc";
+                    }).catch(()=>{});
+                }
+            };
+
             let views = localStorage.getItem('profile_views');
             views = !views ? 5 : parseInt(views) + 1;
             localStorage.setItem('profile_views', views);
             const viewElem = document.getElementById('view-count');
             if(viewElem) viewElem.innerText = views;
 
-            music.play().then(() => {
-                isPlaying = true;
-                musicIcon.className = "fa-solid fa-pause";
-                musicText.innerText = "Tắt Nhạc";
+            window.music.play().then(() => {
+                window.isPlaying = true;
+                window.musicIcon.className = "fa-solid fa-pause";
+                window.musicText.innerText = "Tắt Nhạc";
             }).catch(() => {
-                const unlockAudio = () => {
-                    music.play().then(() => {
-                        isPlaying = true;
-                        musicIcon.className = "fa-solid fa-pause";
-                        musicText.innerText = "Tắt Nhạc";
-                        document.removeEventListener('click', unlockAudio);
-                        document.removeEventListener('keydown', unlockAudio);
+                const unlock = () => {
+                    window.music.play().then(() => {
+                        window.isPlaying = true;
+                        window.musicIcon.className = "fa-solid fa-pause";
+                        window.musicText.innerText = "Tắt Nhạc";
+                        document.removeEventListener('click', unlock);
+                        document.removeEventListener('keydown', unlock);
                     }).catch(()=>{});
                 };
-                document.addEventListener('click', unlockAudio);
-                document.addEventListener('keydown', unlockAudio);
+                document.addEventListener('click', unlock);
+                document.addEventListener('keydown', unlock);
             });
         });
     </script>
