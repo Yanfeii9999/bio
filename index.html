@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yanfeii_9999</title>
+    <title>SAKURA SMP - Discord Profile</title>
     <!-- Font chữ hiện đại từ Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Thư viện biểu tượng FontAwesome -->
@@ -261,7 +261,7 @@
     <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image" onerror="this.src='https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80'">
     <div class="bg-overlay"></div>
 
-    <!-- Thẻ Audio tự động phát ngầm (Đổi tên file mp3 của bạn thành music.mp3) -->
+    <!-- Thẻ Audio tự động phát ngầm (Đảm bảo file nhạc của bạn tên là music.mp3 đặt chung thư mục) -->
     <audio id="bg-music" loop autoplay>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
@@ -347,14 +347,14 @@
             let playPromise = music.play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
-                    // Trình duyệt chặn tự phát -> Tự kích hoạt chạy ngay khi người dùng chạm/click bất cứ đâu trên màn hình lần đầu
-                    const triggerPlay = () => {
+                    // Tự động phát ngay khi có cú click/chạm đầu tiên bất kỳ trên màn hình
+                    const startAudio = () => {
                         music.play();
-                        window.removeEventListener('pointerdown', triggerPlay);
-                        window.removeEventListener('keydown', triggerPlay);
+                        window.removeEventListener('pointerdown', startAudio);
+                        window.removeEventListener('keydown', startAudio);
                     };
-                    window.addEventListener('pointerdown', triggerPlay);
-                    window.addEventListener('keydown', triggerPlay);
+                    window.addEventListener('pointerdown', startAudio);
+                    window.addEventListener('keydown', startAudio);
                 });
             }
         });
