@@ -15,6 +15,11 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            /* Chặn bôi đen và chọn văn bản */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -39,6 +44,7 @@
             z-index: -2;
             filter: brightness(0.3) blur(10px);
             transform: scale(1.05);
+            pointer-events: none;
         }
 
         .bg-overlay {
@@ -49,6 +55,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: -1;
+            pointer-events: none;
         }
 
         /* Khung chứa chính chuẩn mẫu Discord Card */
@@ -73,6 +80,7 @@
             height: 120px;
             object-fit: cover;
             background: #2b2d31;
+            pointer-events: none;
         }
 
         /* Phần thân profile chứa avatar và nội dung */
@@ -96,6 +104,7 @@
             border-radius: 50%;
             object-fit: cover;
             border: 6px solid #18191c;
+            pointer-events: none;
         }
 
         .discord-online-badge {
@@ -367,8 +376,72 @@
         </div>
     </div>
 
-    <!-- Script xử lý nhạc tự động và điều khiển nút -->
+    <!-- Script xử lý bảo mật toàn diện -->
     <script>
+        // 1. CHẶN CHUỘT PHẢI
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. CHẶN CÁC PHÍM TẮT (F12, Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+U, Ctrl+S, Ctrl+P, PrintScreen...)
+        document.addEventListener('keydown', function(e) {
+            // Chặn phím F12
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Chặn phím PrintScreen (Chụp màn hình)
+            if (e.key === 'PrintScreen') {
+                e.preventDefault();
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText("");
+                }
+                return false;
+            }
+
+            // Chặn các tổ hợp phím tắt với phím Ctrl
+            if (e.ctrlKey && (
+                e.key === 'c' || e.key === 'C' || // Chặn Ctrl+C (Copy)
+                e.key === 'v' || e.key === 'V' || // Chặn Ctrl+V (Paste)
+                e.key === 'x' || e.key === 'X' || // Chặn Ctrl+X (Cut)
+                e.key === 'a' || e.key === 'A' || // Chặn Ctrl+A (Select All)
+                e.key === 'u' || e.key === 'U' || // Chặn Ctrl+U (View Source)
+                e.key === 's' || e.key === 'S' || // Chặn Ctrl+S (Save)
+                e.key === 'p' || e.key === 'P' || // Chặn Ctrl+P (Print)
+                (e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c'))
+            )) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 3. CHẶN SỰ KIỆN COPY, CUT VÀ PASTE TRỰC TIẾP TRÊN TRÌNH DUYỆT
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+        });
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+        });
+        document.addEventListener('paste', function(e) {
+            e.preventDefault();
+        });
+
+        // 4. CHẶN KÉO THẢ ẢNH / NỘI DUNG
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
+
+        // 5. BẪY PHÁT HIỆN MỞ DEVTOOLS (F12)
+        setInterval(function() {
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            if (widthThreshold || heightThreshold) {
+                document.body.innerHTML = "<div style='background:#0b0b0e;color:red;height:100vh;display:flex;justify-content:center;align-items:center;font-size:2rem;font-family:sans-serif;'>Truy cập bị từ chối! Vui lòng tắt công cụ lập trình.</div>";
+            }
+        }, 1000);
+
+        // --- Xử lý nhạc nền ---
         const music = document.getElementById('bg-music');
         const musicIcon = document.getElementById('music-icon');
         const musicText = document.getElementById('music-text');
@@ -393,14 +466,12 @@
             }
         }
 
-        // Tự động cố gắng phát nhạc khi vào trang
         window.addEventListener('DOMContentLoaded', () => {
             music.play().then(() => {
                 isPlaying = true;
                 musicIcon.className = "fa-solid fa-pause";
                 musicText.innerText = "Tắt Nhạc";
             }).catch(error => {
-                // Nếu trình duyệt chặn tự phát, tự động mở khóa phát nhạc ngay khi người dùng click/chạm đầu tiên bất kỳ đâu trên màn hình
                 const unlockAudio = () => {
                     music.play().then(() => {
                         isPlaying = true;
@@ -415,7 +486,7 @@
             });
         });
 
-        // Xử lý bộ đếm lượt xem
+        // --- Xử lý bộ đếm lượt xem ---
         let views = localStorage.getItem('profile_views');
         if (!views) {
             views = 5;
