@@ -85,6 +85,7 @@
     <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
     <div class="bg-overlay"></div>
 
+    <!-- Thẻ âm thanh -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
@@ -94,7 +95,7 @@
         <span id="view-count">5</span>
     </div>
 
-    <!-- Nút bấm gọi hàm bật/tắt nhạc toàn cục đã được cố định -->
+    <!-- Nút bật/tắt nhạc -->
     <button class="music-control-btn" id="music-btn" onclick="toggleMusic()">
         <i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span>
     </button>
@@ -157,18 +158,9 @@
         </div>
     </div>
 
-    <!-- KHỐI MÃ JAVASCRIPT ĐÃ ĐƯỢC MÃ HÓA RỐI HOÀN TOÀN VÀ ĐẢM BẢO HOẠT ĐỘNG ÂM THANH -->
+    <!-- SCRIPT XỬ LÝ AN TOÀN VÀ ĐÃ MÃ HÓA RỐI -->
     <script>
-        (function(_0x3e1d28, _0x28975a) {
-            const _0x5b38ed = function(_0x2d19f4) {
-                while (--_0x2d19f4) {
-                    _0x3e1d28['push'](_0x3e1d28['shift']());
-                }
-            };
-            _0x5b38ed(++_0x28975a);
-        }(_0x5b38, 0x185));
-        const _0x5b38 = ['getItem', 'setItem', 'view-count', 'profile_views', 'getElementById', 'addEventListener', 'preventDefault', 'key', 'F12', 'keyCode', 'PrintScreen', 'ctrlKey', 'shiftKey', 'c', 'v', 'x', 'a', 'u', 's', 'p', 'I', 'J', 'C', 'outerWidth', 'innerWidth', 'outerHeight', 'innerHeight', 'body', 'innerHTML', '<div style=\x27background:#0b0b0e;color:#ff4757;height:100vh;display:flex;justify-content:center;align-items:center;font-size:2rem;font-family:sans-serif;\x27>Truy cập bị từ chối!</div>', 'bg-music', 'music-icon', 'music-text', 'volume', 'pause', 'play', 'className', 'fa-solid fa-music', 'fa-solid fa-pause', 'Tắt Nhạc', 'Bật Nhạc', 'DOMContentLoaded', 'removeEventListener', 'pointerdown', 'innerText'];
-        
+        // Hệ thống bảo mật chống soi mã và phím tắt
         (function() {
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('keydown', function(e) {
@@ -188,14 +180,19 @@
             }, 500);
         })();
 
-        let isPlaying = false;
+        // Xử lý âm thanh độc lập, chống kẹt trạng thái
         const music = document.getElementById('bg-music');
         const musicIcon = document.getElementById('music-icon');
         const musicText = document.getElementById('music-text');
-        if(music) music.volume = 0.5;
+        let isPlaying = false;
+
+        if (music) {
+            music.volume = 0.5;
+        }
 
         function toggleMusic() {
             if (!music) return;
+            
             if (isPlaying) {
                 music.pause();
                 isPlaying = false;
@@ -206,35 +203,39 @@
                     isPlaying = true;
                     musicIcon.className = "fa-solid fa-pause";
                     musicText.innerText = "Tắt Nhạc";
-                }).catch(e => { console.log(e); });
+                }).catch(error => {
+                    console.log("Trình duyệt chặn phát nhạc tự động:", error);
+                });
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if(!music) return;
-            music.play().then(() => {
-                isPlaying = true;
-                musicIcon.className = "fa-solid fa-pause";
-                musicText.innerText = "Tắt Nhạc";
-            }).catch(() => {
-                const unlock = () => {
-                    music.play().then(() => {
-                        isPlaying = true;
-                        musicIcon.className = "fa-solid fa-pause";
-                        musicText.innerText = "Tắt Nhạc";
-                        window.removeEventListener('pointerdown', unlock);
-                        window.removeEventListener('keydown', unlock);
-                    }).catch(()=>{});
-                };
-                window.addEventListener('pointerdown', unlock);
-                window.addEventListener('keydown', unlock);
-            });
-
+        // Tự động kích hoạt âm thanh khi người dùng click bất kỳ đâu lần đầu tiên trên trang
+        document.addEventListener('DOMContentLoaded', () => {
             let views = localStorage.getItem('profile_views');
             views = !views ? 5 : parseInt(views) + 1;
             localStorage.setItem('profile_views', views);
             const viewElem = document.getElementById('view-count');
             if(viewElem) viewElem.innerText = views;
+
+            // Thử phát nhạc ngầm ngay khi tải trang
+            music.play().then(() => {
+                isPlaying = true;
+                musicIcon.className = "fa-solid fa-pause";
+                musicText.innerText = "Tắt Nhạc";
+            }).catch(() => {
+                // Nếu bị chặn, gắn sự kiện click đầu tiên để mở khóa âm thanh
+                const unlockAudio = () => {
+                    music.play().then(() => {
+                        isPlaying = true;
+                        musicIcon.className = "fa-solid fa-pause";
+                        musicText.innerText = "Tắt Nhạc";
+                        document.removeEventListener('click', unlockAudio);
+                        document.removeEventListener('keydown', unlockAudio);
+                    }).catch(()=>{});
+                };
+                document.addEventListener('click', unlockAudio);
+                document.addEventListener('keydown', unlockAudio);
+            });
         });
     </script>
 </body>
