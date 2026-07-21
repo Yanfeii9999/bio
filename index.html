@@ -254,12 +254,12 @@
             z-index: 1000;
         }
 
-        /* Nút bật/tắt nhạc phong cách góc phải */
+        /* Nút bật/tắt nhạc phong cách góc phải dưới */
         .music-control-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(24, 25, 28, 0.8);
+            background: rgba(24, 25, 28, 0.85);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #ffffff;
@@ -275,7 +275,7 @@
         }
 
         .music-control-btn:hover {
-            background: rgba(88, 101, 242, 0.8);
+            background: rgba(88, 101, 242, 0.9);
         }
     </style>
 </head>
@@ -285,18 +285,18 @@
     <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image" onerror="this.src='https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&auto=format&fit=crop&q=80'">
     <div class="bg-overlay"></div>
 
-    <!-- Thẻ Audio (Hãy đổi tên file nhạc của bạn thành music.mp3 để không bị lỗi đường dẫn) -->
+    <!-- Thẻ Audio tự động phát nhạc ngầm (Tên file: music.mp3) -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Bộ đếm lượt xem -->
+    <!-- Bộ đếm lượt xem góc dưới bên trái -->
     <div class="views-counter">
         <i class="fa-regular fa-eye"></i> 
         <span id="view-count">5</span>
     </div>
 
-    <!-- Nút bật/tắt nhạc dự phòng nếu trình duyệt chặn tự phát -->
+    <!-- Nút bật/tắt nhạc góc dưới bên phải -->
     <button class="music-control-btn" id="music-btn" onclick="toggleMusic()">
         <i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span>
     </button>
@@ -367,10 +367,9 @@
         </div>
     </div>
 
-    <!-- Script xử lý nhạc và lượt xem -->
+    <!-- Script xử lý nhạc tự động và điều khiển nút -->
     <script>
         const music = document.getElementById('bg-music');
-        const musicBtn = document.getElementById('music-btn');
         const musicIcon = document.getElementById('music-icon');
         const musicText = document.getElementById('music-text');
         let isPlaying = false;
@@ -389,28 +388,30 @@
                     musicIcon.className = "fa-solid fa-pause";
                     musicText.innerText = "Tắt Nhạc";
                 }).catch(e => {
-                    console.log("Phát nhạc bị chặn bởi trình duyệt");
+                    console.log("Không thể phát nhạc:", e);
                 });
             }
         }
 
-        // Tự động cố gắng phát khi load trang
+        // Tự động cố gắng phát nhạc khi vào trang
         window.addEventListener('DOMContentLoaded', () => {
             music.play().then(() => {
                 isPlaying = true;
                 musicIcon.className = "fa-solid fa-pause";
                 musicText.innerText = "Tắt Nhạc";
             }).catch(error => {
-                // Nếu trình duyệt chặn, người dùng chỉ cần click 1 lần bất kỳ trên trang hoặc bấm nút góc phải
-                window.addEventListener('pointerdown', () => {
-                    if (!isPlaying) {
-                        music.play().then(() => {
-                            isPlaying = true;
-                            musicIcon.className = "fa-solid fa-pause";
-                            musicText.innerText = "Tắt Nhạc";
-                        });
-                    }
-                }, { once: true });
+                // Nếu trình duyệt chặn tự phát, tự động mở khóa phát nhạc ngay khi người dùng click/chạm đầu tiên bất kỳ đâu trên màn hình
+                const unlockAudio = () => {
+                    music.play().then(() => {
+                        isPlaying = true;
+                        musicIcon.className = "fa-solid fa-pause";
+                        musicText.innerText = "Tắt Nhạc";
+                        window.removeEventListener('pointerdown', unlockAudio);
+                        window.removeEventListener('keydown', unlockAudio);
+                    });
+                };
+                window.addEventListener('pointerdown', unlockAudio);
+                window.addEventListener('keydown', unlockAudio);
             });
         });
 
