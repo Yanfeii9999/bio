@@ -34,6 +34,8 @@
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Yanfeii_9999</title>
+                <!-- Thêm Favicon logo.png cho tab trình duyệt -->
+                <link rel="icon" type="image/png" href="logo.png">
                 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
                 <style>
@@ -314,7 +316,6 @@
 
             loadSong(0);
 
-            // Tự động phát nhạc khi vào trang (có cơ chế mở khóa nếu trình duyệt chặn)
             audio.play().then(() => {
                 playPauseIcon.className = "fa-solid fa-pause";
             }).catch(() => {
