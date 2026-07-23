@@ -3,22 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Dashboard - Template v1.0.4</title>
-    <!-- MÃ HTML GIẢ ĐỂ ĐÁNH LẠC HƯỚNG KHI SOI INSPECT -->
+    <title>Yanfeii_9999</title>
+    <!-- Thêm Favicon logo.png cho tab trình duyệt -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #111; color: #00ff00; font-family: monospace; padding: 50px; }
-        .fake-log { font-size: 14px; opacity: 0.7; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-user-select: none; user-select: none; }
+        body { background-color: #0b0b0e; color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; position: relative; }
+        .bg-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: brightness(0.3) blur(10px); transform: scale(1.05); pointer-events: none; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none; }
+        .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; }
+        .discord-profile-card { background: #18191c; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .discord-banner { width: 100%; height: 120px; object-fit: cover; background: #2b2d31; pointer-events: none; }
+        .discord-body { padding: 0 16px 16px 16px; position: relative; }
+        .discord-avatar-container { position: relative; width: 80px; height: 80px; margin-top: -45px; margin-bottom: 10px; }
+        .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 6px solid #18191c; pointer-events: none; }
+        .discord-online-badge { position: absolute; bottom: 4px; right: 4px; width: 16px; height: 16px; background-color: #23a55a; border: 3px solid #18191c; border-radius: 50%; }
+        .discord-username-area { margin-bottom: 12px; }
+        .discord-display-name { font-size: 1.25rem; font-weight: 700; color: #f2f3f5; display: flex; align-items: center; gap: 6px; }
+        .discord-username { font-size: 0.85rem; color: #949ba4; }
+        .discord-badges-icons { color: #5865F2; font-size: 1rem; }
+        .discord-bio { font-size: 0.85rem; color: #dbdee1; line-height: 1.5; background: #111214; padding: 10px; border-radius: 8px; margin-bottom: 12px; word-break: break-word; }
+        .discord-bio a { color: #00a8fc; text-decoration: none; }
+        .bio-title-text { color: #949ba4; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .discord-roles-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+        .role-pill { display: inline-flex; align-items: center; gap: 5px; background: #2b2d31; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; color: #dbdee1; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .role-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .social-icons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
+        .social-btn { width: 40px; height: 40px; background: #18191c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #dbdee1; font-size: 1.1rem; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .views-counter { position: fixed; bottom: 20px; left: 20px; display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #d4d4d8; z-index: 1000; }
+
+        /* Giao diện thanh nhạc nằm vị trí nút cũ */
+        .music-player-card {
+            background: rgba(24, 25, 28, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .player-thumb {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .player-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+        .player-title {
+            color: #ff2a85;
+            font-weight: 700;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .player-progress-area {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .player-time {
+            font-size: 0.7rem;
+            color: #ff75b5;
+            width: 30px;
+            flex-shrink: 0;
+        }
+        .progress-bar-container {
+            flex-grow: 1;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+        .progress-bar-filled {
+            height: 100%;
+            background: #ff2a85;
+            border-radius: 3px;
+            width: 0%;
+            position: relative;
+        }
+        .progress-handle {
+            position: absolute;
+            right: -4px;
+            top: -3.5px;
+            width: 11px;
+            height: 11px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .control-btn {
+            background: none;
+            border: none;
+            color: #ff2a85;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+        .control-btn:active { transform: scale(0.9); }
+        .play-pause-btn {
+            width: 34px;
+            height: 34px;
+            background: #ff2a85;
+            color: #ffffff;
+            border-radius: 50%;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
-    <h1>[INFO] Core Server Initialized...</h1>
-    <p class="fake-log">Loading modules: [====================] 100%</p>
-    <p class="fake-log">Status: Template repository protected by standard GNU license.</p>
-    <p class="fake-log">Error 403: Restricted debug area. No sensitive data exposed here.</p>
+    <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
+    <div class="bg-overlay"></div>
+    
+    <!-- Thẻ Audio -->
+    <audio id="bg-music"></audio>
 
-    <!-- TRANG THẬT SẼ ĐƯỢC JAVASCRIPT ĐỘNG TIÊM (RENDER) NGẦM VÀO SAU KHI TẢI TRANG -->
+    <div class="views-counter"><i class="fa-regular fa-eye"></i> <span id="view-count">5</span></div>
+
+    <div class="container">
+        <div class="discord-profile-card">
+            <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner">
+            <div class="discord-body">
+                <div class="discord-avatar-container">
+                    <img src="logo.png" alt="Avatar" class="discord-avatar">
+                    <div class="discord-online-badge"></div>
+                </div>
+                <div class="discord-username-area">
+                    <div class="discord-display-name">Yanfeii_9999 <i class="fa-solid fa-circle-check discord-badges-icons"></i></div>
+                    <div class="discord-username">valor_sakura</div>
+                </div>
+                <div class="bio-title-text">Giới thiệu</div>
+                <div class="discord-bio">
+                    Admin server Minecraft<br><strong>SAKURA SMP</strong><br>
+                    <a href="https://discord.gg/jchMgVN2u" target="_blank">https://discord.gg/jchMgVN2u</a><br><br>
+                    💻 Dev: HTML, CSS, JS, C++, PYTHON<br>🗄️ Database: MySQL, SQL Server<br>🎨 Design: Web + Poster<br>🚀 Leader dự án 1 team coreexpress
+                </div>
+                <div class="bio-title-text">Vai trò</div>
+                <div class="discord-roles-container">
+                    <div class="role-pill"><span class="role-dot" style="background-color: #1abc9c;"></span> Admin</div>
+                    <div class="role-pill"><span class="role-dot" style="background-color: #e91e63;"></span> Trai</div>
+                </div>
+
+                <!-- Thanh Trình Phát Nhạc -->
+                <div class="music-player-card">
+                    <img src="logo.png" alt="Thumbnail" class="player-thumb" id="player-thumb">
+                    <div class="player-info">
+                        <div class="player-title" id="player-title">Đang tải nhạc...</div>
+                        <div class="player-progress-area">
+                            <span class="player-time" id="current-time">0:00</span>
+                            <div class="progress-bar-container" id="progress-container">
+                                <div class="progress-bar-filled" id="progress-filled">
+                                    <div class="progress-handle"></div>
+                                </div>
+                            </div>
+                            <span class="player-time" id="duration-time">0:00</span>
+                        </div>
+                    </div>
+                    <div class="player-controls">
+                        <button class="control-btn" id="prev-btn" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
+                        <button class="control-btn play-pause-btn" id="play-pause-btn" title="Phát/Tạm dừng"><i class="fa-solid fa-play" id="play-pause-icon"></i></button>
+                        <button class="control-btn" id="next-btn" title="Bài tiếp theo"><i class="fa-solid fa-forward-step"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="social-icons">
+            <a href="https://discord.gg/8thR9ZDf" target="_blank" class="social-btn"><i class="fa-brands fa-discord" style="color: #5865F2;"></i></a>
+            <a href="https://www.instagram.com/luuquangtronghistory/" target="_blank" class="social-btn"><i class="fa-brands fa-instagram" style="color: #E4405F;"></i></a>
+            <a href="https://www.facebook.com/trongquangluu2026" target="_blank" class="social-btn"><i class="fa-brands fa-facebook" style="color: #0866FF;"></i></a>
+        </div>
+    </div>
+
     <script>
-        // Chặn hoàn toàn mọi tương tác và phím tắt như cũ
+        // Chặn hoàn toàn mọi tương tác và phím tắt
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
             if (e.key === 'F12' || e.keyCode === 123 || (e.ctrlKey && ['c','C','v','V','x','X','u','U','s','S','p','P','a','A'].includes(e.key))) {
@@ -28,324 +207,116 @@
         });
         ['copy', 'cut', 'paste', 'dragstart'].forEach(ev => document.addEventListener(ev, e => e.preventDefault()));
 
-        // Tự động thay thế toàn bộ nội dung HTML giả bên trên bằng giao diện Discord thật ngay khi trang load xong
-        window.addEventListener('DOMContentLoaded', () => {
-            document.head.innerHTML = `
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Yanfeii_9999</title>
-                <!-- Thêm Favicon logo.png cho tab trình duyệt -->
-                <link rel="icon" type="image/png" href="logo.png">
-                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-                <style>
-                    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-user-select: none; user-select: none; }
-                    body { background-color: #0b0b0e; color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; position: relative; }
-                    .bg-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: brightness(0.3) blur(10px); transform: scale(1.05); pointer-events: none; }
-                    .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none; }
-                    .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; }
-                    .discord-profile-card { background: #18191c; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); }
-                    .discord-banner { width: 100%; height: 120px; object-fit: cover; background: #2b2d31; pointer-events: none; }
-                    .discord-body { padding: 0 16px 16px 16px; position: relative; }
-                    .discord-avatar-container { position: relative; width: 80px; height: 80px; margin-top: -45px; margin-bottom: 10px; }
-                    .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 6px solid #18191c; pointer-events: none; }
-                    .discord-online-badge { position: absolute; bottom: 4px; right: 4px; width: 16px; height: 16px; background-color: #23a55a; border: 3px solid #18191c; border-radius: 50%; }
-                    .discord-username-area { margin-bottom: 12px; }
-                    .discord-display-name { font-size: 1.25rem; font-weight: 700; color: #f2f3f5; display: flex; align-items: center; gap: 6px; }
-                    .discord-username { font-size: 0.85rem; color: #949ba4; }
-                    .discord-badges-icons { color: #5865F2; font-size: 1rem; }
-                    .discord-bio { font-size: 0.85rem; color: #dbdee1; line-height: 1.5; background: #111214; padding: 10px; border-radius: 8px; margin-bottom: 12px; word-break: break-word; }
-                    .discord-bio a { color: #00a8fc; text-decoration: none; }
-                    .bio-title-text { color: #949ba4; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
-                    .discord-roles-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-                    .role-pill { display: inline-flex; align-items: center; gap: 5px; background: #2b2d31; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; color: #dbdee1; border: 1px solid rgba(255, 255, 255, 0.05); }
-                    .role-dot { width: 8px; height: 8px; border-radius: 50%; }
-                    .social-icons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
-                    .social-btn { width: 40px; height: 40px; background: #18191c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #dbdee1; font-size: 1.1rem; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.05); }
-                    .views-counter { position: fixed; bottom: 20px; left: 20px; display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #d4d4d8; z-index: 1000; }
+        // Danh sách nhạc
+        const playlist = [
+            { title: "Bông Hoa Chẳng Tồn Tại", src: "bong-hoa-chang-ton-tai.mp3", thumb: "logo.png" },
+            { title: "Thủy Chung", src: "thuy-chung.mp3", thumb: "sonthuytrungmaysau.png" },
+            { title: "Cỏ Dại Và Hoa Danh Danh", src: "co-dai-va-hoa-danh-danh.mp3", thumb: "sonthuytrungmaysau.png" },
+            { title: "Nơi Có Pháo Hoa Rực Rỡ", src: "Noi-co-phao-hoa-ruc-ro.mp3", thumb: "sonthuytrungmaysau.png" }
+        ];
 
-                    /* Giao diện thanh nhạc nằm vị trí nút cũ */
-                    .music-player-card {
-                        background: rgba(24, 25, 28, 0.9);
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                        border-radius: 12px;
-                        padding: 12px;
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        width: 100%;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                    }
-                    .player-thumb {
-                        width: 45px;
-                        height: 45px;
-                        border-radius: 8px;
-                        object-fit: cover;
-                        flex-shrink: 0;
-                    }
-                    .player-info {
-                        flex-grow: 1;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 4px;
-                        min-width: 0;
-                    }
-                    .player-title {
-                        color: #ff2a85;
-                        font-weight: 700;
-                        font-size: 0.9rem;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-                    .player-progress-area {
-                        display: flex;
-                        align-items: center;
-                        gap: 6px;
-                    }
-                    .player-time {
-                        font-size: 0.7rem;
-                        color: #ff75b5;
-                        width: 30px;
-                        flex-shrink: 0;
-                    }
-                    .progress-bar-container {
-                        flex-grow: 1;
-                        height: 5px;
-                        background: rgba(255, 255, 255, 0.15);
-                        border-radius: 3px;
-                        position: relative;
-                        cursor: pointer;
-                    }
-                    .progress-bar-filled {
-                        height: 100%;
-                        background: #ff2a85;
-                        border-radius: 3px;
-                        width: 0%;
-                        position: relative;
-                    }
-                    .progress-handle {
-                        position: absolute;
-                        right: -4px;
-                        top: -3.5px;
-                        width: 11px;
-                        height: 11px;
-                        background: #ffffff;
-                        border-radius: 50%;
-                        box-shadow: 0 0 4px rgba(0,0,0,0.5);
-                    }
-                    .player-controls {
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        flex-shrink: 0;
-                    }
-                    .control-btn {
-                        background: none;
-                        border: none;
-                        color: #ff2a85;
-                        font-size: 1rem;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        transition: transform 0.1s;
-                    }
-                    .control-btn:active { transform: scale(0.9); }
-                    .play-pause-btn {
-                        width: 34px;
-                        height: 34px;
-                        background: #ff2a85;
-                        color: #ffffff;
-                        border-radius: 50%;
-                        font-size: 0.9rem;
-                    }
-                </style>
-            `;
+        let currentSongIndex = 0;
+        const audio = document.getElementById('bg-music');
+        const titleElem = document.getElementById('player-title');
+        const thumbElem = document.getElementById('player-thumb');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playPauseIcon = document.getElementById('play-pause-icon');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressContainer = document.getElementById('progress-container');
+        const progressFilled = document.getElementById('progress-filled');
+        const currentTimeElem = document.getElementById('current-time');
+        const durationTimeElem = document.getElementById('duration-time');
 
-            document.body.innerHTML = `
-                <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
-                <div class="bg-overlay"></div>
-                
-                <!-- Thẻ Audio -->
-                <audio id="bg-music"></audio>
+        audio.volume = 0.5;
 
-                <div class="views-counter"><i class="fa-regular fa-eye"></i> <span id="view-count">5</span></div>
+        function loadSong(index) {
+            currentSongIndex = index;
+            audio.src = playlist[index].src;
+            titleElem.innerText = playlist[index].title;
+            thumbElem.src = playlist[index].thumb;
+            audio.load();
+        }
 
-                <div class="container">
-                    <div class="discord-profile-card">
-                        <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner">
-                        <div class="discord-body">
-                            <div class="discord-avatar-container">
-                                <img src="logo.png" alt="Avatar" class="discord-avatar">
-                                <div class="discord-online-badge"></div>
-                            </div>
-                            <div class="discord-username-area">
-                                <div class="discord-display-name">Yanfeii_9999 <i class="fa-solid fa-circle-check discord-badges-icons"></i></div>
-                                <div class="discord-username">valor_sakura</div>
-                            </div>
-                            <div class="bio-title-text">Giới thiệu</div>
-                            <div class="discord-bio">
-                                Admin server Minecraft<br><strong>SAKURA SMP</strong><br>
-                                <a href="https://discord.gg/jchMgVN2u" target="_blank">https://discord.gg/jchMgVN2u</a><br><br>
-                                💻 Dev: HTML, CSS, JS, C++, PYTHON<br>🗄️ Database: MySQL, SQL Server<br>🎨 Design: Web + Poster<br>🚀 Leader dự án 1 team coreexpress
-                            </div>
-                            <div class="bio-title-text">Vai trò</div>
-                            <div class="discord-roles-container">
-                                <div class="role-pill"><span class="role-dot" style="background-color: #1abc9c;"></span> Admin</div>
-                                <div class="role-pill"><span class="role-dot" style="background-color: #e91e63;"></span> Trai</div>
-                            </div>
-
-                            <!-- Thanh Trình Phát Nhạc -->
-                            <div class="music-player-card">
-                                <img src="logo.png" alt="Thumbnail" class="player-thumb" id="player-thumb">
-                                <div class="player-info">
-                                    <div class="player-title" id="player-title">Đang tải nhạc...</div>
-                                    <div class="player-progress-area">
-                                        <span class="player-time" id="current-time">0:00</span>
-                                        <div class="progress-bar-container" id="progress-container" onclick="seekAudio(event)">
-                                            <div class="progress-bar-filled" id="progress-filled">
-                                                <div class="progress-handle"></div>
-                                            </div>
-                                        </div>
-                                        <span class="player-time" id="duration-time">0:00</span>
-                                    </div>
-                                </div>
-                                <div class="player-controls">
-                                    <button class="control-btn" onclick="prevSong()" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
-                                    <button class="control-btn play-pause-btn" id="play-pause-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-pause-icon"></i></button>
-                                    <button class="control-btn" onclick="nextSong()" title="Bài tiếp theo"><i class="fa-solid fa-forward-step"></i></button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="social-icons">
-                        <a href="https://discord.gg/8thR9ZDf" target="_blank" class="social-btn"><i class="fa-brands fa-discord" style="color: #5865F2;"></i></a>
-                        <a href="https://www.instagram.com/luuquangtronghistory/" target="_blank" class="social-btn"><i class="fa-brands fa-instagram" style="color: #E4405F;"></i></a>
-                        <a href="https://www.facebook.com/trongquangluu2026" target="_blank" class="social-btn"><i class="fa-brands fa-facebook" style="color: #0866FF;"></i></a>
-                    </div>
-                </div>
-            `;
-
-            // ----- DANH SÁCH 2 BÀI NHẠC -----
-            const playlist = [
-    { 
-        title: "Yanfeii_9999", 
-        src: "bong-hoa-chang-ton-tai.mp3", 
-        thumb: "logo.png" 
-    },
-    { 
-        title: "Yanfeii_9999", 
-        src: "thuy-chung.mp3", 
-        thumb: "sonthuytrungmaysau.png" 
-    },
-    { 
-        title: "Yanfeii_9999", 
-        src: "co-dai-va-hoa-danh-danh.mp3", 
-        thumb: "sonthuytrungmaysau.png" 
-    },
-    { 
-        title: "Yanfeii_9999", 
-        src: "Noi-co-phao-hoa-ruc-ro.mp3", 
-        thumb: "sonthuytrungmaysau.png" 
-    }
-];
-
-            let currentSongIndex = 0;
-            const audio = document.getElementById('bg-music');
-            const titleElem = document.getElementById('player-title');
-            const thumbElem = document.getElementById('player-thumb');
-            const playPauseIcon = document.getElementById('play-pause-icon');
-            const progressFilled = document.getElementById('progress-filled');
-            const currentTimeElem = document.getElementById('current-time');
-            const durationTimeElem = document.getElementById('duration-time');
-
-            audio.volume = 0.5;
-
-            function loadSong(index) {
-                currentSongIndex = index;
-                audio.src = playlist[index].src;
-                titleElem.innerText = playlist[index].title;
-                thumbElem.src = playlist[index].thumb;
-                audio.load();
-            }
-
-            window.togglePlay = function() {
-                if (audio.paused) {
-                    audio.play().then(() => {
-                        playPauseIcon.className = "fa-solid fa-pause";
-                    }).catch(()=>{});
-                } else {
-                    audio.pause();
-                    playPauseIcon.className = "fa-solid fa-play";
-                }
-            };
-
-            window.nextSong = function() {
-                currentSongIndex = (currentSongIndex + 1) % playlist.length;
-                loadSong(currentSongIndex);
+        function togglePlay() {
+            if (audio.paused) {
                 audio.play().then(() => {
                     playPauseIcon.className = "fa-solid fa-pause";
-                }).catch(()=>{});
-            };
-
-            window.prevSong = function() {
-                currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
-                loadSong(currentSongIndex);
-                audio.play().then(() => {
-                    playPauseIcon.className = "fa-solid fa-pause";
-                }).catch(()=>{});
-            };
-
-            window.seekAudio = function(e) {
-                const container = document.getElementById('progress-container');
-                const rect = container.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                audio.currentTime = pos * audio.duration;
-            };
-
-            function formatTime(seconds) {
-                const m = Math.floor(seconds / 60);
-                const s = Math.floor(seconds % 60);
-                return `${m}:${s < 10 ? '0' : ''}${s}`;
+                }).catch(() => {});
+            } else {
+                audio.pause();
+                playPauseIcon.className = "fa-solid fa-play";
             }
+        }
 
-            audio.addEventListener('timeupdate', () => {
-                if(audio.duration) {
-                    const percent = (audio.currentTime / audio.duration) * 100;
-                    progressFilled.style.width = percent + '%';
-                    currentTimeElem.innerText = formatTime(audio.currentTime);
-                    durationTimeElem.innerText = formatTime(audio.duration);
-                }
-            });
-
-            audio.addEventListener('ended', () => {
-                nextSong();
-            });
-
-            loadSong(0);
-
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            loadSong(currentSongIndex);
             audio.play().then(() => {
                 playPauseIcon.className = "fa-solid fa-pause";
-            }).catch(() => {
-                const unlock = () => {
-                    audio.play().then(() => {
-                        playPauseIcon.className = "fa-solid fa-pause";
-                        document.removeEventListener('click', unlock);
-                        document.removeEventListener('keydown', unlock);
-                    }).catch(()=>{});
-                };
-                document.addEventListener('click', unlock);
-                document.addEventListener('keydown', unlock);
-            });
+            }).catch(() => {});
+        }
 
-            let views = localStorage.getItem('profile_views');
-            views = !views ? 5 : parseInt(views) + 1;
-            localStorage.setItem('profile_views', views);
-            const viewElem = document.getElementById('view-count');
-            if(viewElem) viewElem.innerText = views;
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+            audio.play().then(() => {
+                playPauseIcon.className = "fa-solid fa-pause";
+            }).catch(() => {});
+        }
+
+        playPauseBtn.addEventListener('click', togglePlay);
+        nextBtn.addEventListener('click', nextSong);
+        prevBtn.addEventListener('click', prevSong);
+
+        progressContainer.addEventListener('click', (e) => {
+            const rect = progressContainer.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            if (audio.duration) {
+                audio.currentTime = pos * audio.duration;
+            }
         });
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFilled.style.width = percent + '%';
+                currentTimeElem.innerText = formatTime(audio.currentTime);
+                durationTimeElem.innerText = formatTime(audio.duration);
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            nextSong();
+        });
+
+        loadSong(0);
+
+        audio.play().then(() => {
+            playPauseIcon.className = "fa-solid fa-pause";
+        }).catch(() => {
+            const unlock = () => {
+                audio.play().then(() => {
+                    playPauseIcon.className = "fa-solid fa-pause";
+                    document.removeEventListener('click', unlock);
+                    document.removeEventListener('keydown', unlock);
+                }).catch(() => {});
+            };
+            document.addEventListener('click', unlock);
+            document.addEventListener('keydown', unlock);
+        });
+
+        let views = localStorage.getItem('profile_views');
+        views = !views ? 5 : parseInt(views) + 1;
+        localStorage.setItem('profile_views', views);
+        const viewElem = document.getElementById('view-count');
+        if (viewElem) viewElem.innerText = views;
     </script>
 </body>
 </html>
