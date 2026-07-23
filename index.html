@@ -41,7 +41,7 @@
                     body { background-color: #0b0b0e; color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; position: relative; }
                     .bg-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: brightness(0.3) blur(10px); transform: scale(1.05); pointer-events: none; }
                     .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: -1; pointer-events: none; }
-                    .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; }
+                    .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; margin-bottom: 80px; }
                     .discord-profile-card { background: #18191c; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); }
                     .discord-banner { width: 100%; height: 120px; object-fit: cover; background: #2b2d31; pointer-events: none; }
                     .discord-body { padding: 0 16px 16px 16px; position: relative; }
@@ -62,16 +62,144 @@
                     .social-icons { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
                     .social-btn { width: 40px; height: 40px; background: #18191c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #dbdee1; font-size: 1.1rem; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.05); }
                     .views-counter { position: fixed; bottom: 20px; left: 20px; display: inline-flex; align-items: center; gap: 6px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #d4d4d8; z-index: 1000; }
-                    .music-control-btn { position: fixed; bottom: 20px; right: 20px; background: rgba(24, 25, 28, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; padding: 10px 14px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 1000; }
+
+                    /* Giao diện thanh nhạc nổi */
+                    .music-player-bar {
+                        position: fixed;
+                        bottom: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 90%;
+                        max-width: 450px;
+                        background: rgba(24, 25, 28, 0.85);
+                        backdrop-filter: blur(15px);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        border-radius: 16px;
+                        padding: 12px 16px;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        z-index: 1000;
+                        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+                    }
+                    .player-thumb {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 10px;
+                        object-fit: cover;
+                        flex-shrink: 0;
+                    }
+                    .player-info {
+                        flex-grow: 1;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+                        min-width: 0;
+                    }
+                    .player-title {
+                        color: #ff2a85;
+                        font-weight: 700;
+                        font-size: 0.95rem;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .player-progress-area {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    .player-time {
+                        font-size: 0.75rem;
+                        color: #ff75b5;
+                        width: 35px;
+                        flex-shrink: 0;
+                    }
+                    .progress-bar-container {
+                        flex-grow: 1;
+                        height: 6px;
+                        background: rgba(255, 255, 255, 0.15);
+                        border-radius: 3px;
+                        position: relative;
+                        cursor: pointer;
+                    }
+                    .progress-bar-filled {
+                        height: 100%;
+                        background: #ff2a85;
+                        border-radius: 3px;
+                        width: 0%;
+                        position: relative;
+                    }
+                    .progress-handle {
+                        position: absolute;
+                        right: -4px;
+                        top: -3px;
+                        width: 12px;
+                        height: 12px;
+                        background: #ffffff;
+                        border-radius: 50%;
+                        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+                    }
+                    .player-controls {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        flex-shrink: 0;
+                    }
+                    .control-btn {
+                        background: none;
+                        border: none;
+                        color: #ff2a85;
+                        font-size: 1.1rem;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: transform 0.1s;
+                    }
+                    .control-btn:active { transform: scale(0.9); }
+                    .play-pause-btn {
+                        width: 38px;
+                        height: 38px;
+                        background: #ff2a85;
+                        color: #ffffff;
+                        border-radius: 50%;
+                        font-size: 1rem;
+                    }
                 </style>
             `;
 
             document.body.innerHTML = `
                 <img src="sonthuytrungmaysau.png" alt="Background" class="bg-image">
                 <div class="bg-overlay"></div>
-                <audio id="bg-music" loop><source src="music.mp3" type="audio/mpeg"></audio>
+                
+                <!-- Thẻ Audio -->
+                <audio id="bg-music"></audio>
+
                 <div class="views-counter"><i class="fa-regular fa-eye"></i> <span id="view-count">5</span></div>
-                <button class="music-control-btn" id="music-btn" onclick="toggleMusic()"><i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Bật Nhạc</span></button>
+
+                <!-- Giao diện Thanh Nhạc Nổi -->
+                <div class="music-player-bar">
+                    <img src="logo.png" alt="Thumbnail" class="player-thumb" id="player-thumb">
+                    <div class="player-info">
+                        <div class="player-title" id="player-title">Đang tải nhạc...</div>
+                        <div class="player-progress-area">
+                            <span class="player-time" id="current-time">0:00</span>
+                            <div class="progress-bar-container" id="progress-container" onclick="seekAudio(event)">
+                                <div class="progress-bar-filled" id="progress-filled">
+                                    <div class="progress-handle"></div>
+                                </div>
+                            </div>
+                            <span class="player-time" id="duration-time">0:00</span>
+                        </div>
+                    </div>
+                    <div class="player-controls">
+                        <button class="control-btn" onclick="prevSong()" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
+                        <button class="control-btn play-pause-btn" id="play-pause-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-pause-icon"></i></button>
+                        <button class="control-btn" onclick="nextSong()" title="Bài tiếp theo"><i class="fa-solid fa-forward-step"></i></button>
+                    </div>
+                </div>
+
                 <div class="container">
                     <div class="discord-profile-card">
                         <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner">
@@ -106,45 +234,100 @@
                 </div>
             `;
 
-            // Khởi chạy logic nhạc và bộ đếm
-            window.music = document.getElementById('bg-music');
-            window.musicIcon = document.getElementById('music-icon');
-            window.musicText = document.getElementById('music-text');
-            window.isPlaying = false;
-            if(window.music) window.music.volume = 0.5;
+            // ----- DANH SÁCH 2 BÀI NHẠC MỚI -----
+            const playlist = [
+                {
+                    title: "Bông Hoa Chẳng Tồn Tại",
+                    src: "bong-hoa-chang-ton-tai.mp3",
+                    thumb: "logo.png"
+                },
+                {
+                    title: "Thủy Chung",
+                    src: "thuy-chung.mp3",
+                    thumb: "sonthuytrungmaysau.png"
+                }
+            ];
 
-            window.toggleMusic = function() {
-                if(!window.music) return;
-                if(window.isPlaying) {
-                    window.music.pause();
-                    window.isPlaying = false;
-                    window.musicIcon.className = "fa-solid fa-music";
-                    window.musicText.innerText = "Bật Nhạc";
-                } else {
-                    window.music.play().then(() => {
-                        window.isPlaying = true;
-                        window.musicIcon.className = "fa-solid fa-pause";
-                        window.musicText.innerText = "Tắt Nhạc";
+            let currentSongIndex = 0;
+            const audio = document.getElementById('bg-music');
+            const titleElem = document.getElementById('player-title');
+            const thumbElem = document.getElementById('player-thumb');
+            const playPauseIcon = document.getElementById('play-pause-icon');
+            const progressFilled = document.getElementById('progress-filled');
+            const currentTimeElem = document.getElementById('current-time');
+            const durationTimeElem = document.getElementById('duration-time');
+
+            audio.volume = 0.5;
+
+            function loadSong(index) {
+                currentSongIndex = index;
+                audio.src = playlist[index].src;
+                titleElem.innerText = playlist[index].title;
+                thumbElem.src = playlist[index].thumb;
+                audio.load();
+            }
+
+            window.togglePlay = function() {
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        playPauseIcon.className = "fa-solid fa-pause";
                     }).catch(()=>{});
+                } else {
+                    audio.pause();
+                    playPauseIcon.className = "fa-solid fa-play";
                 }
             };
 
-            let views = localStorage.getItem('profile_views');
-            views = !views ? 5 : parseInt(views) + 1;
-            localStorage.setItem('profile_views', views);
-            const viewElem = document.getElementById('view-count');
-            if(viewElem) viewElem.innerText = views;
+            window.nextSong = function() {
+                currentSongIndex = (currentSongIndex + 1) % playlist.length;
+                loadSong(currentSongIndex);
+                audio.play().then(() => {
+                    playPauseIcon.className = "fa-solid fa-pause";
+                }).catch(()=>{});
+            };
 
-            window.music.play().then(() => {
-                window.isPlaying = true;
-                window.musicIcon.className = "fa-solid fa-pause";
-                window.musicText.innerText = "Tắt Nhạc";
+            window.prevSong = function() {
+                currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+                loadSong(currentSongIndex);
+                audio.play().then(() => {
+                    playPauseIcon.className = "fa-solid fa-pause";
+                }).catch(()=>{});
+            };
+
+            window.seekAudio = function(e) {
+                const container = document.getElementById('progress-container');
+                const rect = container.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = pos * audio.duration;
+            };
+
+            function formatTime(seconds) {
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                return `${m}:${s < 10 ? '0' : ''}${s}`;
+            }
+
+            audio.addEventListener('timeupdate', () => {
+                if(audio.duration) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    progressFilled.style.width = percent + '%';
+                    currentTimeElem.innerText = formatTime(audio.currentTime);
+                    durationTimeElem.innerText = formatTime(audio.duration);
+                }
+            });
+
+            audio.addEventListener('ended', () => {
+                nextSong();
+            });
+
+            loadSong(0);
+
+            audio.play().then(() => {
+                playPauseIcon.className = "fa-solid fa-pause";
             }).catch(() => {
                 const unlock = () => {
-                    window.music.play().then(() => {
-                        window.isPlaying = true;
-                        window.musicIcon.className = "fa-solid fa-pause";
-                        window.musicText.innerText = "Tắt Nhạc";
+                    audio.play().then(() => {
+                        playPauseIcon.className = "fa-solid fa-pause";
                         document.removeEventListener('click', unlock);
                         document.removeEventListener('keydown', unlock);
                     }).catch(()=>{});
@@ -152,6 +335,12 @@
                 document.addEventListener('click', unlock);
                 document.addEventListener('keydown', unlock);
             });
+
+            let views = localStorage.getItem('profile_views');
+            views = !views ? 5 : parseInt(views) + 1;
+            localStorage.setItem('profile_views', views);
+            const viewElem = document.getElementById('view-count');
+            if(viewElem) viewElem.innerText = views;
         });
     </script>
 </body>
