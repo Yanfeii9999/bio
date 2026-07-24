@@ -207,16 +207,14 @@
         });
         ['copy', 'cut', 'paste', 'dragstart'].forEach(ev => document.addEventListener(ev, e => e.preventDefault()));
 
-        // Danh sách nhạc
-        const playlist = [
-            { title: "Yanfeii_9999", src: "bong-hoa-chang-ton-tai.mp3", thumb: "logo.png" },
-            { title: "Yanfeii_9999", src: "thuy-chung.mp3", thumb: "sonthuytrungmaysau.png" },
-            { title: "Yanfeii_9999", src: "co-dai-va-hoa-danh-danh.mp3", thumb: "logo.png" },
-            { title: "Yanfeii_9999", src: "Noi-co-phao-hoa-ruc-ro.mp3", thumb: "sonthuytrungmaysau.png" }
-            { title: "Yanfeii_9999", src: "Quan-son-tuu.mp3", thumb: "logo.png" }
-        ];
+        // Thông tin GitHub để tự động lấy file nhạc
+        const GITHUB_USER = "Yanfeii9999";
+        const GITHUB_REPO = "bio";
+        const GITHUB_BRANCH = "main";
 
+        let playlist = [];
         let currentSongIndex = 0;
+
         const audio = document.getElementById('bg-music');
         const titleElem = document.getElementById('player-title');
         const thumbElem = document.getElementById('player-thumb');
@@ -231,15 +229,60 @@
 
         audio.volume = 0.5;
 
+        // Hàm tự động quét và lấy danh sách file nhạc từ GitHub repository
+        async function fetchPlaylistFromGitHub() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents?ref=${GITHUB_BRANCH}`);
+                const files = await response.json();
+                
+                // Lọc ra các file có đuôi .mp3
+                const mp3Files = files.filter(file => file.name.endsWith('.mp3'));
+                
+                if (mp3Files.length > 0) {
+                    playlist = mp3Files.map(file => {
+                        return {
+                            title: "Yanfeii_9999", // Cố định mọi bài đều hiện tên này
+                            src: file.download_url,
+                            thumb: "logo.png"
+                        };
+                    });
+                    
+                    loadSong(0);
+                    
+                    // Tự động phát nhạc
+                    audio.play().then(() => {
+                        playPauseIcon.className = "fa-solid fa-pause";
+                    }).catch(() => {
+                        const unlock = () => {
+                            audio.play().then(() => {
+                                playPauseIcon.className = "fa-solid fa-pause";
+                                document.removeEventListener('click', unlock);
+                                document.removeEventListener('keydown', unlock);
+                            }).catch(() => {});
+                        };
+                        document.addEventListener('click', unlock);
+                        document.addEventListener('keydown', unlock);
+                    });
+                } else {
+                    titleElem.innerText = "Yanfeii_9999";
+                }
+            } catch (error) {
+                console.error("Lỗi tải danh sách nhạc:", error);
+                titleElem.innerText = "Yanfeii_9999";
+            }
+        }
+
         function loadSong(index) {
+            if (playlist.length === 0) return;
             currentSongIndex = index;
             audio.src = playlist[index].src;
-            titleElem.innerText = playlist[index].title;
+            titleElem.innerText = playlist[index].title; // Luôn hiển thị "Yanfeii_9999"
             thumbElem.src = playlist[index].thumb;
             audio.load();
         }
 
         function togglePlay() {
+            if (playlist.length === 0) return;
             if (audio.paused) {
                 audio.play().then(() => {
                     playPauseIcon.className = "fa-solid fa-pause";
@@ -251,6 +294,7 @@
         }
 
         function nextSong() {
+            if (playlist.length === 0) return;
             currentSongIndex = (currentSongIndex + 1) % playlist.length;
             loadSong(currentSongIndex);
             audio.play().then(() => {
@@ -259,6 +303,7 @@
         }
 
         function prevSong() {
+            if (playlist.length === 0) return;
             currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
             loadSong(currentSongIndex);
             audio.play().then(() => {
@@ -297,21 +342,8 @@
             nextSong();
         });
 
-        loadSong(0);
-
-        audio.play().then(() => {
-            playPauseIcon.className = "fa-solid fa-pause";
-        }).catch(() => {
-            const unlock = () => {
-                audio.play().then(() => {
-                    playPauseIcon.className = "fa-solid fa-pause";
-                    document.removeEventListener('click', unlock);
-                    document.removeEventListener('keydown', unlock);
-                }).catch(() => {});
-            };
-            document.addEventListener('click', unlock);
-            document.addEventListener('keydown', unlock);
-        });
+        // Khởi chạy lấy danh sách nhạc từ GitHub
+        fetchPlaylistFromGitHub();
 
         let views = localStorage.getItem('profile_views');
         views = !views ? 5 : parseInt(views) + 1;
