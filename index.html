@@ -50,7 +50,7 @@
         }
         .global-audio-btn:hover { transform: scale(1.1); background: rgba(255, 182, 193, 0.15); }
 
-        /* Bảng chỉnh âm lượng hiển thị sẵn, có nút loa nhỏ và thanh trượt để tự chỉnh */
+        /* Thanh chỉnh âm lượng tự ẩn sau 10s hoặc khi click ra ngoài */
         .global-volume-popup {
             position: fixed;
             top: 70px;
@@ -60,16 +60,19 @@
             border: 1px solid rgba(255, 182, 193, 0.25);
             padding: 8px 12px;
             border-radius: 10px;
-            display: flex;
+            display: none;
             align-items: center;
             gap: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             z-index: 1000;
         }
+        .global-volume-popup.active { display: flex; }
         .volume-slider { width: 80px; height: 4px; accent-color: #ff75b5; cursor: pointer; background: rgba(255,255,255,0.2); border-radius: 2px; }
 
+        /* Khung container xếp dọc các thành phần tách biệt hoàn toàn giống mẫu zyo.lol */
         .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; display: flex; flex-direction: column; gap: 12px; }
 
+        /* Ô Discord Profile Box tách rời */
         .discord-profile-card { 
             background: rgba(255, 182, 193, 0.04); 
             backdrop-filter: blur(12px); 
@@ -78,23 +81,13 @@
             overflow: hidden; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
             border: 1px solid rgba(255, 182, 193, 0.15); 
-            padding: 16px;
-        }
-        
-        .discord-body { position: relative; display: flex; flex-direction: column; gap: 12px; }
-        
-        .discord-sub-box {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 182, 193, 0.2);
-            border-radius: 12px;
-            padding: 12px 16px;
+            padding: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            backdrop-filter: blur(8px);
         }
 
-        .discord-sub-left { display: flex; align-items: center; gap: 14px; }
+        .discord-sub-left { display: flex; align-items: center; gap: 12px; }
         .discord-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #ff75b5; pointer-events: none; flex-shrink: 0; background: #111; }
         
         .discord-user-info { display: flex; flex-direction: column; justify-content: center; }
@@ -114,9 +107,23 @@
         }
         .view-profile-btn:hover { transform: scale(1.05); }
 
-        .discord-bio { font-size: 0.82rem; color: #ffe6eb; line-height: 1.4; background: rgba(0, 0, 0, 0.2); padding: 14px; border-radius: 8px; word-break: break-word; border: 1px solid rgba(255, 182, 193, 0.1); }
-        .discord-bio a { color: #ff79c6; text-decoration: none; }
+        /* Ô Bio Box tách rời riêng biệt */
+        .discord-bio-card {
+            background: rgba(255, 182, 193, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 182, 193, 0.15);
+            font-size: 0.82rem;
+            color: #ffe6eb;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        .discord-bio-card a { color: #ff79c6; text-decoration: none; }
 
+        /* Trình phát nhạc */
         .music-player-card {
             background: rgba(255, 182, 193, 0.04);
             backdrop-filter: blur(12px);
@@ -172,7 +179,7 @@
         <i class="fa-solid fa-volume-high" id="global-audio-icon"></i>
     </div>
 
-    <!-- Thanh chỉnh âm lượng luôn hiện sẵn theo yêu cầu -->
+    <!-- Thanh chỉnh âm lượng tự ẩn sau 10s hoặc khi click ra ngoài -->
     <div class="global-volume-popup" id="global-volume-popup">
         <i class="fa-solid fa-volume-high" style="color: #ff75b5; font-size: 0.85rem;"></i>
         <input type="range" min="0" max="1" step="0.05" value="1" class="volume-slider" id="volume-slider" title="Điều chỉnh âm lượng">
@@ -187,27 +194,26 @@
     <div class="views-counter"><i class="fa-regular fa-eye"></i> <span id="view-count">5</span></div>
 
     <div class="container">
+        <!-- Khung 1: Discord Profile Box tách rời -->
         <div class="discord-profile-card">
-            <div class="discord-body">
-                <div class="discord-sub-box">
-                    <div class="discord-sub-left">
-                        <img src="logo.png" alt="Avatar" class="discord-avatar">
-                        <div class="discord-user-info">
-                            <div class="discord-display-name">Yanfeii_9999</div>
-                            <div class="discord-status">valor_sakura</div>
-                        </div>
-                    </div>
-                    <a href="https://discord.gg/jchMgVN2u" target="_blank" class="view-profile-btn">View Profile</a>
-                </div>
-
-                <div class="discord-bio">
-                    Admin server Minecraft<br><strong>SAKURA SMP</strong><br>
-                    <a href="https://discord.gg/jchMgVN2u" target="_blank">https://discord.gg/jchMgVN2u</a><br><br>
-                    💻 Dev: HTML, CSS, JS, C++, PYTHON<br>🗄️ Database: MySQL, SQL Server<br>🎨 Design: Web + Poster<br>🚀 Leader dự án 1 team coreexpress<br>HLV vovinam
+            <div class="discord-sub-left">
+                <img src="logo.png" alt="Avatar" class="discord-avatar">
+                <div class="discord-user-info">
+                    <div class="discord-display-name">Yanfeii_9999 🌸</div>
+                    <div class="discord-status">valor_sakura</div>
                 </div>
             </div>
+            <a href="https://discord.gg/jchMgVN2u" target="_blank" class="view-profile-btn">View Profile</a>
         </div>
 
+        <!-- Khung 2: Bio Box tách rời -->
+        <div class="discord-bio-card">
+            Admin server Minecraft<br><strong>SAKURA SMP</strong><br>
+            <a href="https://discord.gg/jchMgVN2u" target="_blank">https://discord.gg/jchMgVN2u</a><br><br>
+            💻 Dev: HTML, CSS, JS, C++, PYTHON<br>🗄️ Database: MySQL, SQL Server<br>🎨 Design: Web + Poster<br>🚀 Leader dự án 1 team coreexpress<br>HLV vovinam
+        </div>
+
+        <!-- Khung 3: Music Player -->
         <div class="music-player-card">
             <img src="logo.png" alt="Thumbnail" class="player-thumb" id="player-thumb">
             <div class="player-info">
@@ -329,8 +335,8 @@
         const volumeSlider = document.getElementById('volume-slider');
         const globalAudioBtn = document.getElementById('global-audio-btn');
         const globalAudioIcon = document.getElementById('global-audio-icon');
+        const globalVolumePopup = document.getElementById('global-volume-popup');
 
-        // Mặc định âm lượng ban đầu là full (1.0)
         audio.volume = 1.0;
         volumeSlider.value = 1.0;
 
@@ -346,17 +352,44 @@
 
         volumeSlider.addEventListener('input', (e) => {
             updateVolumeUI(e.target.value);
+            resetHideTimer();
         });
 
-        // Click vào nút loa góc trái để bật/tắt nhanh âm thanh (mute/unmute)
-        let lastVolume = 1.0;
-        globalAudioBtn.addEventListener('click', () => {
-            if (audio.volume > 0) {
-                lastVolume = audio.volume;
-                updateVolumeUI(0);
+        // Xử lý ẩn tự động thanh chỉnh âm lượng sau 10s hoặc khi click ra ngoài
+        let hideTimer = null;
+
+        function showVolumePopup() {
+            globalVolumePopup.classList.add('active');
+            resetHideTimer();
+        }
+
+        function resetHideTimer() {
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+                globalVolumePopup.classList.remove('active');
+            }, 10000);
+        }
+
+        globalAudioBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (globalVolumePopup.classList.contains('active')) {
+                globalVolumePopup.classList.remove('active');
+                clearTimeout(hideTimer);
             } else {
-                updateVolumeUI(lastVolume > 0 ? lastVolume : 1.0);
+                showVolumePopup();
             }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!globalVolumePopup.contains(e.target) && !globalAudioBtn.contains(e.target)) {
+                globalVolumePopup.classList.remove('active');
+                clearTimeout(hideTimer);
+            }
+        });
+
+        globalVolumePopup.addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetHideTimer();
         });
 
         function loadSong(index) {
