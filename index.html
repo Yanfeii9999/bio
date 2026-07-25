@@ -70,12 +70,20 @@
 
         .container { width: 100%; max-width: 400px; padding: 20px; z-index: 1; display: flex; flex-direction: column; gap: 12px; }
 
-        .discord-profile-card { background: rgba(255, 182, 193, 0.04); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 182, 193, 0.15); }
-        .discord-banner { width: 100%; height: 100px; object-fit: cover; pointer-events: none; opacity: 0.85; }
+        /* Khung chính đã xoá bỏ banner phía trên, căn lề và bo góc hoàn hảo chuẩn zyo.lol */
+        .discord-profile-card { 
+            background: rgba(255, 182, 193, 0.04); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
+            border: 1px solid rgba(255, 182, 193, 0.15); 
+            padding: 16px;
+        }
         
-        .discord-body { padding: 0 16px 16px 16px; position: relative; }
+        .discord-body { position: relative; display: flex; flex-direction: column; gap: 12px; }
         
-        /* Cân đối khoảng cách và bỏ viền chữ Avatar */
         .discord-sub-box {
             background: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 182, 193, 0.2);
@@ -84,8 +92,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: -35px;
-            margin-bottom: 14px;
             backdrop-filter: blur(8px);
         }
 
@@ -182,7 +188,6 @@
 
     <div class="container">
         <div class="discord-profile-card">
-            <img src="sonthuytrungmaysau.png" alt="Banner" class="discord-banner">
             <div class="discord-body">
                 <div class="discord-sub-box">
                     <div class="discord-sub-left">
